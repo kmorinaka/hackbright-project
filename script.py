@@ -10,9 +10,7 @@ import oauth2
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 4
-DEFAULT_TERM = 'grocery'
-DEFAULT_LOCATION = 'Huntington Beach, CA'
+SEARCH_LIMIT = 3
 
 
 CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
@@ -37,12 +35,10 @@ def request(host, path, url_params=None):
         urllib2.HTTPError: An error occurs from the HTTP request.
     """
     url_params = url_params or {}
-    url = 'http://{0}{1}?'.format(host, urllib.quote(path.encode('uft8')))
-    #header: host, content type
+    url = 'http://{0}{1}?'.format(host, urllib.quote(path.encode('utf8')))
 
     consumer = oauth2.Consumer(CONSUMER_KEY, CONSUMER_SECRET)
     oauth_request = oauth2.Request(method="GET", url=url, parameters=url_params)
-    #making the GET request
 
     oauth_request.update(
         {
@@ -56,7 +52,7 @@ def request(host, path, url_params=None):
     oauth_request.sign_request(oauth2.SignatureMethod_HMAC_SHA1(), consumer, token)
     signed_url = oauth_request.to_url()
 
-    print 'Querying {0} ...'.format(url)
+    print u'Querying {0} ...'.format(url)
 
     conn = urllib2.urlopen(signed_url, None)
     try:
@@ -77,7 +73,6 @@ def search(term, location):
     Returns:
         dict: The JSON response from the request.
     """
-
     url_params = {
         'term': term.replace(' ', '+'),
         'location': location.replace(' ', '+'),
@@ -86,7 +81,7 @@ def search(term, location):
     return request(API_HOST, SEARCH_PATH, url_params=url_params)
 
 
-def get_business(bussiness_id):
+def get_business(business_id):
     """Query the Business API by a business ID.
 
     Args:
@@ -109,32 +104,30 @@ def query_api(term, location):
     """
     response = search(term, location)
 
-    businesses = response.get('business')
+    businesses = response.get('businesses')
 
     if not businesses:
-        print 'No businesses for {0} in {1} found.'.format(term, location)
+        print u'No businesses for {0} in {1} found.'.format(term, location)
         return
 
     business_id = businesses[0]['id']
 
-    print '{0} businesses found querying business info for the top result "{1}" ...'.format(
+    print u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
         len(businesses),
         business_id
     )
 
     response = get_business(business_id)
 
-    print 'Result for business "{0}" found:'.format(business_id)
+    print u'Result for business "{0}" found:'.format(business_id)
     pprint.pprint(response, indent=2)
 
 
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-q', '--term', dest='term', default=DEFAULT_TERM, type=str,
-                        help='Search term (default: %(default)s)')
-    parser.add_argument('-l', '--location', dest='location', default=DEFAULT_LOCATION,
-                        type=str, help='Search location(default: %(default)s)')
+    parser.add_argument('-q', '--term', dest='term', default=DEFAULT_TERM, type=str, help='Search term (default: %(default)s)')
+    parser.add_argument('-l', '--location', dest='location', default=DEFAULT_LOCATION, type=str, help='Search location (default: %(default)s)')
 
     input_values = parser.parse_args()
 

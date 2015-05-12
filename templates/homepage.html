@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %} Project Title {% endblock %}
+
+{% block content %}
+
+<h1>Project Title</h1>
+    <!-- 
+    text input for search keyword
+    text input for location
+    submit button
+    background image
+    --> 
+    <form id="search" method="GET" action="/searchresults">
+        <label>I'm looking for:
+            <input type="text" name="term">
+        </label>
+        
+        <label>Location:
+            <input type="text" name="location">
+        </label>
+            <input type="submit" value="">
+            <!--change value to text i want on button-->
+    </form>
+
+{% endblock %}
