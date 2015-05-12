@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from script import search
+from script import query_api
 
 app = Flask(__name__)
 
@@ -27,7 +27,7 @@ def search_results():
     """Will show the list of businesses resulting from a search"""
     term = request.form.get('term')
     location = request.form.get('location')
-    response = search(term, location)
+    response = query_api(term, location)
 
     return render_template('results.html', response=response)
 

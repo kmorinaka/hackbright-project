@@ -10,7 +10,8 @@ import oauth2
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 3
+SEARCH_LIMIT = 5
+
 
 
 CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
@@ -73,9 +74,11 @@ def search(term, location):
     Returns:
         dict: The JSON response from the request.
     """
+    term = term + '+'
+    location = location + '+'
     url_params = {
-        'term': term.replace(' ', '+'),
-        'location': location.replace(' ', '+'),
+        'term': term,  #term.replace(' ', '+')
+        'location': location,  #location.replace(' ', '+')
         'limit': SEARCH_LIMIT
     }
     return request(API_HOST, SEARCH_PATH, url_params=url_params)
@@ -120,21 +123,26 @@ def query_api(term, location):
     response = get_business(business_id)
 
     print u'Result for business "{0}" found:'.format(business_id)
-    pprint.pprint(response, indent=2)
+    # pprint.pprint(response, indent=2)
+    return response
+    #response is dict of info for first business result
 
 
-def main():
-    parser = argparse.ArgumentParser()
+# def main():
+#     parser = argparse.ArgumentParser(
+#         description='Request to APIs. Return repsonse (search results)')
 
-    parser.add_argument('-q', '--term', dest='term', default=DEFAULT_TERM, type=str, help='Search term (default: %(default)s)')
-    parser.add_argument('-l', '--location', dest='location', default=DEFAULT_LOCATION, type=str, help='Search location (default: %(default)s)')
+#     parser.add_argument('-q', '--term', dest='term',
+#                         type=str, help='Search term')
+#     parser.add_argument('-l', '--location', dest='location',
+#                         type=str, help='Search location')
 
-    input_values = parser.parse_args()
+#     input_values = parser.parse_args()
 
-    try:
-        query_api(input_values.term, input_values.location)
-    except urllib2.HTTPError as error:
-        sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
+#     try:
+#         query_api(input_values.term, input_values.location)
+#     except urllib2.HTTPError as error:
+#         sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
 
 
 if __name__ == '__main__':
