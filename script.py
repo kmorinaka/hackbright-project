@@ -1,7 +1,5 @@
-import argparse
 import json
 import pprint
-import sys
 import urllib
 import urllib2
 import oauth2
@@ -11,8 +9,6 @@ API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 SEARCH_LIMIT = 5
-
-
 
 CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
 CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
@@ -74,11 +70,9 @@ def search(term, location):
     Returns:
         dict: The JSON response from the request.
     """
-    term = term + '+'
-    location = location + '+'
     url_params = {
-        'term': term,  #term.replace(' ', '+')
-        'location': location,  #location.replace(' ', '+')
+        'term': term.replace(' ', '+'),
+        'location': location.replace(' ', '+'),
         'limit': SEARCH_LIMIT
     }
     return request(API_HOST, SEARCH_PATH, url_params=url_params)
@@ -88,7 +82,7 @@ def get_business(business_id):
     """Query the Business API by a business ID.
 
     Args:
-        bussiness_id(str): The ID of the business query.
+        business_id(str): The ID of the business query.
 
     Returns:
         dict: The JSON response from the request.
@@ -106,44 +100,32 @@ def query_api(term, location):
         location(str): The location of the business to the query.
     """
     response = search(term, location)
-
+    print response
+    #response is a dic wiht key businesses: [list of dictionaries for each business]
     businesses = response.get('businesses')
+    #businesses is a list of top results based on number specified in SEARCH_LIMIT
+
+    print len(businesses)
+    #pprint.pprint(businesses, indent=2)
 
     if not businesses:
         print u'No businesses for {0} in {1} found.'.format(term, location)
         return
 
-    business_id = businesses[0]['id']
+    list_ids = []
+    for i in range(len(businesses)):
+        list_ids.append(businesses[i]['id'])
+    print list_ids
+    #get business ids for first 5 businesses (5 is SEARCH_LIMIT)
 
-    print u'{0} businesses found, querying business info for the top result "{1}" ...'.format(
-        len(businesses),
-        business_id
-    )
-
-    response = get_business(business_id)
+    response_list = []
+    for business_id in list_ids:
+        response_list.append(get_business(business_id))
+    #take the list_ids, run each through the get_business function to make request to business API
+    #put each search result into a response list
 
     print u'Result for business "{0}" found:'.format(business_id)
-    # pprint.pprint(response, indent=2)
-    return response
-    #response is dict of info for first business result
+    #pprint.pprint(response, indent=2)
 
-
-# def main():
-#     parser = argparse.ArgumentParser(
-#         description='Request to APIs. Return repsonse (search results)')
-
-#     parser.add_argument('-q', '--term', dest='term',
-#                         type=str, help='Search term')
-#     parser.add_argument('-l', '--location', dest='location',
-#                         type=str, help='Search location')
-
-#     input_values = parser.parse_args()
-
-#     try:
-#         query_api(input_values.term, input_values.location)
-#     except urllib2.HTTPError as error:
-#         sys.exit('Encountered HTTP error {0}. Abort program.'.format(error.code))
-
-
-if __name__ == '__main__':
-    main()
+    return response_list
+    #response_list is list of dictionaries w/ info for each business result

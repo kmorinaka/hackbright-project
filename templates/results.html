@@ -3,12 +3,24 @@
 
     <h1>Results:</h1>
     <br>
-    {{ response }}
+    <ul>
+    {% for response in response_list %}
+
+        <li>{{ response }}</li>
+
+    {% endfor %}
+    </ul>
     <!--
     image for business
     display business info
     link to yelp
     map?
+
+    yelp html to display star ratings
+
+        <i class="star-img stars_4_half" title="4.5 star rating">
+            <img alt="4.5 star rating" class="offscreen" height="303" src="//s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png" width="84">
+        </i>
     -->
 
 {% endblock %}

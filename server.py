@@ -22,14 +22,15 @@ def index():
     return render_template('homepage.html')
 
 
-@app.route('/searchresults')
+@app.route('/searchresults', methods=['GET'])
 def search_results():
     """Will show the list of businesses resulting from a search"""
-    term = request.form.get('term')
-    location = request.form.get('location')
-    response = query_api(term, location)
+    term = str(request.args.get('term'))
+    location = str(request.args.get('location'))
 
-    return render_template('results.html', response=response)
+    response_list = query_api(term, location)
+
+    return render_template('results.html', response_list=response_list)
 
 
 # @app.route('/')
