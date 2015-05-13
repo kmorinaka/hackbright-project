@@ -8,7 +8,7 @@ import oauth2
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 5
+SEARCH_LIMIT = 6
 
 CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
 CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
@@ -114,9 +114,19 @@ def query_api(term, location):
 
     list_ids = []
     for i in range(len(businesses)):
+
         list_ids.append(businesses[i]['id'])
     print list_ids
     #get business ids for first 5 businesses (5 is SEARCH_LIMIT)
+
+    # for business_id in list_ids:
+    #     if business_id[-2] == '-':
+    #     #if the second to last character in the business_id is a '-',
+    #     #it is a multiple location, so remove it from the list
+    #         business_id = business_id[:-2]
+    #             #removing the '-2' or '-3', resulting in multiple ids as ralphs-h-b
+    # print list_ids
+    #list_ids should have 'ralphs-h-b', 'ralphs-h-b'
 
     response_list = []
     for business_id in list_ids:
@@ -127,5 +137,9 @@ def query_api(term, location):
     print u'Result for business "{0}" found:'.format(business_id)
     #pprint.pprint(response, indent=2)
 
+    #for response in response_list:
+        #return response_list[:5]
+        #search limit 15 or > to weed out duplicate locations, only return 5 results to screen
+    
     return response_list
     #response_list is list of dictionaries w/ info for each business result

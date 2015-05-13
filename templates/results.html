@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div class="container-fluid">
     <h1>Results:</h1>
     <br>
-    <ul>
+    <div class="container">
     {% for response in response_list %}
 
-        <li>{{ response }}</li>
-
+        <h2 class="bname">{{ response['name'] }}</h2>
+        <li>Address: {{ response['location']['display_address'] }}</li>
+        <li>Link to Yelp: {{ response['url'] }}</li>
+        <li>Phone number: {{ response['display_phone'] }}</li>
+        <li>{{ response['categories'] }}</li>
+        
+        <br><br>
     {% endfor %}
-    </ul>
+    </div>
     <!--
     image for business
     display business info
@@ -22,5 +27,5 @@
             <img alt="4.5 star rating" class="offscreen" height="303" src="//s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png" width="84">
         </i>
     -->
-
+</div>
 {% endblock %}
