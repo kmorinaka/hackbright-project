@@ -28,9 +28,9 @@ def search_results():
     term = str(request.args.get('term'))
     location = str(request.args.get('location'))
 
-    response_list = query_api(term, location)
+    businesses = query_api(term, location)
 
-    return render_template('results.html', response_list=response_list)
+    return render_template('results.html', businesses=businesses)
 
 
 # @app.route('/')

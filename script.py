@@ -1,5 +1,5 @@
 import json
-import pprint
+from pprint import pprint
 import urllib
 import urllib2
 import oauth2
@@ -9,7 +9,7 @@ from exclude import stores
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 5
+SEARCH_LIMIT = 20
 
 CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
 CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
@@ -100,62 +100,19 @@ def query_api(term, location):
         term(str): The search term to query.
         location(str): The location of the business to the query.
     """
+
     response = search(term, location)
 
-    #response is a dic wiht key businesses: [list of dictionaries for each business]
-    businesses = response.get('businesses')
-    #businesses is a list of top results based on number specified in SEARCH_LIMIT
+    def is_chain(name):
+        found = False
+        for store_name in stores:
+            if store_name in name:
+                found = True
+        return found
 
-    print len(businesses)
-    #pprint.pprint(businesses, indent=2)
+    list_ids = [business['id'] for business in response['businesses'] if not is_chain(business['id'])]
 
-    if not businesses:
-        print u'No businesses for {0} in {1} found.'.format(term, location)
-        return
+    businesses = [get_business(business_id) for business_id in list_ids]
 
-    avoid = []
-    #list of business ids to avoid/exclude
-    list_ids = []
-    # for i in range(len(businesses)):
-    #     for s in stores:
-    #         if s in businesses[i]['id']:
-    #             avoid.append(businesses[i]['id'])
-    #             businesses.pop(businesses.index(businesses[i]))
-    #         else:
-    #             list_ids.append(businesses[i]['id'])
-    for i in range(len(businesses)):
-        list_ids.append(businesses[i]['id'])
-
-    for s in stores:
-        for business_id in list_ids:
-            if s in business_id:
-                avoid.append(business_id)
-                list_ids.pop(list_ids.index(business_id))
-
-    print "HERE ARE THE LISTS"
-    print list_ids
-    print avoid
-
-    """YOU LEFT OFF HERE:
-
-    what printed in terminal
-    list_ids = [u'ocean-pacific-market-huntington-beach', u'ralphs-huntington-beach-2']
-    avoid = [u'trader-joes-huntington-beach', u'ralphs-huntington-beach-4', u'ralphs-irvine-3']
-    Why did it take out some ralphs, but not all?? """
-    #get business ids for first 5 businesses (5 is SEARCH_LIMIT)
-
-    response_list = []
-    for business_id in list_ids:
-        response_list.append(get_business(business_id))
-    #take the list_ids, run each through the get_business function to make request to business API
-    #put each search result into a response list
-
-    print u'Result for business "{0}" found:'.format(business_id)
-    #pprint.pprint(response, indent=2)
-
-    #for response in response_list:
-        #return response_list[:5]
-        #search limit 15 or > to weed out duplicate locations, only return 5 results to screen
-    
-    #return response_list
-    #response_list is list of dictionaries w/ info for each business result
+    return businesses
+   

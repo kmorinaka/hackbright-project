@@ -1,6 +1,4 @@
-Abercrombie & Fitch
-Abraham & Straus
-Acorn Stores
+'Abercrombie & Fitch', 'Abraham & Straus', 'Acorn Stores        
 Aéropostale (clothing)
 Against All Odds (clothing retailer)
 Al's Formal Wear

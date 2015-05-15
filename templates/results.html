@@ -4,13 +4,13 @@
     <h1>Results:</h1>
     <br>
     <div class="container">
-    {% for response in response_list %}
+    {% for business in businesses %}
 
-        <h2 class="bname">{{ response['name'] }}</h2>
-        <li>Address: {{ response['location']['display_address'] }}</li>
-        <li>Link to Yelp: {{ response['url'] }}</li>
-        <li>Phone number: {{ response['display_phone'] }}</li>
-        <li>{{ response['categories'] }}</li>
+        <h2 id="bname">{{ business['name'] }}</h2>
+        <li>Address: {{ business['location']['display_address'] }}</li>
+        <li>Link to Yelp: {{ business['url'] }}</li>
+        <li>Phone number: {{ business['display_phone'] }}</li>
+        <li>{{ business['categories'] }}</li>
         
         <br><br>
     {% endfor %}
