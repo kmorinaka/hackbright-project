@@ -1,0 +1,29 @@
+When this was in my app route, it only displayed info for one business result 
+
+PYTHON
+# for business in businesses:
+    #     name = business['name']
+    #     address = ' '.join(business['location']['address'])
+    #     city = business['location']['city']
+    #     state = business['location']['state_code']
+    #     zipcode = business['location']['postal_code']
+    #     phone = business['display_phone']
+    #     yelp_url = business['url']
+    #     rating = business['rating']
+    #         # categories is a list of lists [['Bakery', 'bakery'], ['Dessert', 'dessert']]
+    #     categories = business['categories']
+    #     for category in categories:
+    #         display_categories = category[0]
+    #     # link to the image of the stars yelp uses for url_rating_stars
+    #     url_rating_stars = business['rating_img_url']
+    #     coordinates = (business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude'])
+  
+    # return render_template('results.html', name=name, address=address, city=city, state=state, zipcode=zipcode,
+    #                        phone=phone, display_categories=display_categories)
+
+HTML
+
+<h3 id="bname">{{ 'name' }}</h3>
+<li>Address: {{ 'address' }} {{ 'city' }}, {{ 'state' }} {{ zipcode' }}</li>
+<li>Phone number: {{ phone }}</li>
+<li>Type: {{ display_categories }}</li>

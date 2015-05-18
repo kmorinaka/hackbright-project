@@ -29,15 +29,22 @@ def search_results():
     location = str(request.args.get('location'))
 
     businesses = query_api(term, location)
-
+    
     return render_template('results.html', businesses=businesses)
 
 
-# @app.route('/')
-# def show_business_profile():
-#     """Show the specific info for one business"""
+@app.route('/profile')
+def show_business_profile(business_name):
+    """Show the specific info for one business"""
 
-#     return "html for business profile page"
+    return render_template('profile.html')
+
+
+@app.route('/resources')
+def resource_articles():
+    """When you click on a button or link, go to page of articles"""
+
+    return render_template('resources.html')
 
 
 if __name__ == "__main__":

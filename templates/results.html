@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
-{% block content %}
-<div class="container-fluid">
-    <h1>Results:</h1>
-    <br>
-    <div class="container">
-    {% for business in businesses %}
 
-        <h2 id="bname">{{ business['name'] }}</h2>
-        <li>Address: {{ business['location']['display_address'] }}</li>
-        <li>Link to Yelp: {{ business['url'] }}</li>
-        <li>Phone number: {{ business['display_phone'] }}</li>
-        <li>{{ business['categories'] }}</li>
+
+
+{% block content %}
+    <div class="container-fluid">
+        <h1>Results:</h1>
+        <br>
+        <div class="container">
         
-        <br><br>
-    {% endfor %}
-    </div>
+        <ul>
+           {% for business in businesses %}
+            <h3 id="bname">{{ business['name'] }}</h3>
+            <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
+            <li>Phone number: {{ business['phone'] }}</li>
+            <li>Categories: {{ business['categories']}}</li>
+            {% endfor %}
+        </ul>
+        </div>
+
+
     <!--
     image for business
     display business info
@@ -26,6 +30,7 @@
         <i class="star-img stars_4_half" title="4.5 star rating">
             <img alt="4.5 star rating" class="offscreen" height="303" src="//s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png" width="84">
         </i>
+    
     -->
-</div>
+    </div>
 {% endblock %}

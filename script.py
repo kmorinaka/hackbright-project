@@ -9,7 +9,7 @@ from exclude import stores
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 20
+SEARCH_LIMIT = 6
 
 CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
 CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
@@ -61,7 +61,7 @@ def request(host, path, url_params=None):
     return response
 
 
-def search(term, location):
+def search(term=None, location=None):
     """Query the Search API by a search term and location.
 
     Args:
@@ -112,7 +112,23 @@ def query_api(term, location):
 
     list_ids = [business['id'] for business in response['businesses'] if not is_chain(business['id'])]
 
+    #running the get_business function by each business_id
     businesses = [get_business(business_id) for business_id in list_ids]
+    #businesses is a list of dictionaries. One for each result.
 
+    #reformating each dictionary with the info i want to display
+    businesses = [{'name': business['name'],
+                'address': ' '.join(business['location']['address']),
+                'city': business['location']['city'],
+                'state': business['location']['state_code'],
+                'zipcode': business['location']['postal_code'],
+                'phone': business['display_phone'],
+                'yelp_url': business['url'], 'rating': business['rating'],
+                'categories': ', '.join([i[0] for i in business['categories']]),
+                'url_rating_stars': business['rating_img_url'],
+                'neighborhoods': business['location']['neighborhoods'],
+                'cross_streets': business['location']['cross_streets'],
+                'coordinates': (business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude'])} for business in businesses]
+    
     return businesses
-   
+        

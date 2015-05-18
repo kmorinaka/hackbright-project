@@ -8,3 +8,4 @@ httplib2==0.9
 Flask-DebugToolbar==0.10.0
 Flask-SQLAlchemy==2.0
 SQLAlchemy==1.0.3
+requests==2.7.0
