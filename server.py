@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
 from script import query_api
+from model import Business, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -29,6 +30,12 @@ def search_results():
     location = str(request.args.get('location'))
 
     businesses = query_api(term, location)
+
+    # add_business = Business(name=name, address=address, city=city, state=state,
+    #                         zipcode=zipcode, phone=phone, yelp_id=yelp_id, yelp_url=yelp_url,
+    #                         url_rating_stars=url_rating_stars)
+    # # db.session.add(add_business)
+    # # db.session.commit()
     
     return render_template('results.html', businesses=businesses)
 

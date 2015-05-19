@@ -9,8 +9,12 @@
         <div class="container">
         
         <ul>
+
            {% for business in businesses %}
-            <h3 id="bname">{{ business['name'] }}</h3>
+            <span id="bname" data-name="{{ business['name'] }}" data-address=""
+            ><h3>{{ business['name'] }}</h3></span>
+            
+
             <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
             <li>Phone number: {{ business['phone'] }}</li>
             <li>Categories: {{ business['categories']}}</li>
@@ -20,7 +24,13 @@
 
 
     <!--
+    add data- attribute for each key in business dictionary
+
+    in javascript attach a click event to the span with id bname
+    event handler for that click even will be a get request to the /profile route
+    
     image for business
+
     display business info
     link to yelp
     map?

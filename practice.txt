@@ -1,3 +1,5 @@
+query_api('grocery', 'san francisco, ca')
+
 When this was in my app route, it only displayed info for one business result 
 
 PYTHON
@@ -27,3 +29,42 @@ HTML
 <li>Address: {{ 'address' }} {{ 'city' }}, {{ 'state' }} {{ zipcode' }}</li>
 <li>Phone number: {{ phone }}</li>
 <li>Type: {{ display_categories }}</li>
+
+****************************************************************************
+Displays correctly except for the things in lists: categories
+
+PYTHON
+businesses = query_api(term, location)
+    
+return render_template('results.html', businesses=businesses)
+
+HTML
+{% for business in businesses %}
+            <h3 id="bname">{{ business['name'] }}</h3>
+            <li>Address: {{ business['location']['address'] }} {{ business['location']['city'] }}, {{ business['location']['state_code'] }} {{ business['location']['postal_code'] }}</li>
+            <li>Phone number: {{ business['display_phone'] }}</li>
+            {% endfor %}
+*******************************************************************************
+Displays:
+name 
+name
+name
+phone
+phone 
+phone
+
+PYTHON
+businesses = query_api(term, location)
+    names = [business['name'] for business in businesses]
+    phones = [business['display_phone'] for business in businesses]
+
+    return render_template('results.html', names=names, phones=phones)
+
+HTML
+ {% for name in names %}
+            <h4>{{ name }}</h4>
+            {% endfor %}
+            
+            {% for phone in phones %}
+            <li>Phone number: {{ phone }}</li>
+            {% endfor %}

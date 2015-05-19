@@ -11,10 +11,7 @@ SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 SEARCH_LIMIT = 6
 
-CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
-CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
-TOKEN = "52YIkIAyQfNkasjTsSUHwRwQ44Nr4IbU"
-TOKEN_SECRET = "bp3Ck0_JhOpFfyPBdtOIa3FdhZg"
+
 
 
 def request(host, path, url_params=None):
@@ -123,6 +120,7 @@ def query_api(term, location):
                 'state': business['location']['state_code'],
                 'zipcode': business['location']['postal_code'],
                 'phone': business['display_phone'],
+                'id': business['id'],
                 'yelp_url': business['url'], 'rating': business['rating'],
                 'categories': ', '.join([i[0] for i in business['categories']]),
                 'url_rating_stars': business['rating_img_url'],

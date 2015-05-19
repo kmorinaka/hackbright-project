@@ -1,15 +1,13 @@
 import requests
 from pprint import pprint
 
-etsy_key = 'dp3soepmfkkux0b1kuy2ywu0'
-etsy_secret = 'f6rvb2z94o'
 
 
-def search_etsy(keywords, region):
+
+def search_etsy(keywords):
     etsy_parameters = {
         "api_key": etsy_key,
         "keywords": keywords,
-        "region": region,
         "limit": 5,
     }
 
