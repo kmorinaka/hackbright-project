@@ -4,14 +4,16 @@ import urllib
 import urllib2
 import oauth2
 from exclude import stores
-
+# from secrets.sh import CONSUMER_SECRET, CONSUMER_KEY, TOKEN, TOKEN_SECRET
 
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 SEARCH_LIMIT = 6
-
-
+CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
+CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
+TOKEN = "52YIkIAyQfNkasjTsSUHwRwQ44Nr4IbU"
+TOKEN_SECRET = "bp3Ck0_JhOpFfyPBdtOIa3FdhZg"
 
 
 def request(host, path, url_params=None):
@@ -127,6 +129,7 @@ def query_api(term, location):
                 'neighborhoods': business['location']['neighborhoods'],
                 'cross_streets': business['location']['cross_streets'],
                 'coordinates': (business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude'])} for business in businesses]
-    
+
     return businesses
-        
+    #look into cross streets for ice cream, san francisco
+    

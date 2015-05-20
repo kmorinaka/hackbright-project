@@ -1,9 +1,15 @@
 <!Doctype html>
 <html>
 <head>
+    <!--This will go to all-->
     <title>{% block title %}Fill in title{% endblock %}</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    
 
+    {% block head %}
+    <!--Head content from other pages -->
+    {% endblock %}
 </head>
     
     <body>

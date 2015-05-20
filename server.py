@@ -31,20 +31,18 @@ def search_results():
 
     businesses = query_api(term, location)
 
-    # add_business = Business(name=name, address=address, city=city, state=state,
-    #                         zipcode=zipcode, phone=phone, yelp_id=yelp_id, yelp_url=yelp_url,
-    #                         url_rating_stars=url_rating_stars)
-    # # db.session.add(add_business)
-    # # db.session.commit()
-    
     return render_template('results.html', businesses=businesses)
 
 
-@app.route('/profile')
-def show_business_profile(business_name):
-    """Show the specific info for one business"""
+@app.route('/profile', methods=['POST'])
+def show_business_profile():
+    """Show the specific info for one business
 
-    return render_template('profile.html')
+    LEFT OFF HERE. FIGURE OUT HOW TO PUT THE DATA ON 'profile.html'
+    """
+    name = request.form['name']
+
+    return render_template('profile.html', name=name)
 
 
 @app.route('/resources')
