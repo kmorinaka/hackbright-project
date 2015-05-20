@@ -4,16 +4,16 @@ import urllib
 import urllib2
 import oauth2
 from exclude import stores
-# from secrets.sh import CONSUMER_SECRET, CONSUMER_KEY, TOKEN, TOKEN_SECRET
+import os
 
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
 SEARCH_LIMIT = 6
-CONSUMER_KEY = "g3dgBew3xq4aHZ14JGF-9Q"
-CONSUMER_SECRET = "-jhY-JQLTweu0vVvHj_oXuYYruk"
-TOKEN = "52YIkIAyQfNkasjTsSUHwRwQ44Nr4IbU"
-TOKEN_SECRET = "bp3Ck0_JhOpFfyPBdtOIa3FdhZg"
+CONSUMER_KEY = os.environ['CONSUMER_KEY']
+CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
+TOKEN = os.environ['TOKEN']
+TOKEN_SECRET = os.environ['TOKEN_SECRET']
 
 
 def request(host, path, url_params=None):
@@ -115,7 +115,18 @@ def query_api(term, location):
     businesses = [get_business(business_id) for business_id in list_ids]
     #businesses is a list of dictionaries. One for each result.
 
-    #reformating each dictionary with the info i want to display
+    # accouting for missing info
+    for business in businesses:
+        if 'display_phone' not in business:
+            business['display_phone'] = 'N/A'
+        elif 'cross_streets' not in business['location']:
+            business['location']['cross_streets'] = 'N/A'
+        elif 'neighborhoods' not in business['location']:
+            business['location']['neighborhoods'] = 'N/A'
+        elif 'coordinates' not in business['location']:
+            business['location']['coordinates'] = 'N/A'
+
+    #reformating each dictionary with the info I want to display
     businesses = [{'name': business['name'],
                 'address': ' '.join(business['location']['address']),
                 'city': business['location']['city'],
@@ -131,5 +142,6 @@ def query_api(term, location):
                 'coordinates': (business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude'])} for business in businesses]
 
     return businesses
+
     #look into cross streets for ice cream, san francisco
     

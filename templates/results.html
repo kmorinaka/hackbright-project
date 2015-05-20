@@ -8,8 +8,12 @@
         <div class="container" id="clickme">
             <ul>
                {% for business in businesses %}
-                <button action="/profile"
-                data-name="{{ business['name'] }}"
+                <div class="savedata"
+                >
+                </div>
+               
+                    <a href='/profile'
+                    data-name="{{ business['name'] }}"
                 data-address="{{ business['address'] }}"
                 data-city="{{ business['city'] }}"
                 data-state="{{ business['state'] }}"
@@ -23,40 +27,38 @@
                 data-neighborhoods="{{ business['neighborhoods'] }}"
                 data-cross-streets="{{ business['cross_streets'] }}"
                 data-coordinates="{{ business['coordinates'] }}">
-                    {{ business['name'] }}
-                    </button>
-               
-
+                {{ business['name'] }}</a>
                     <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
                     <li>Phone number: {{ business['phone'] }}</li>
                     <li>Categories: {{ business['categories']}}</li>
                 {% endfor %}
+                <br><br>
             </ul>
         </div>
    </div>
     <script> 
         //when they click on the business name, the function getProfile, gets the data from the data attributes
-        $("button").on("click", function(evt) {
-            // var businessName = $("#bname").data('name');
-            // var address = $("#bname").data('address');
-            // var city = $("#bname").data('city');
-            // var state = $("#bname").data('state');
-            // var zipcode = $("#bname").data('zipcode');
-            // var phone = $("#bname").data('phone');
-            // var categories = $("#bname").data('categories');
-            // var id = $("#bname").data('id');
-            // var yelpUrl = $("#bname").data('yelp-url');
-            // var rating = $("#bname").data('rating');
-            // var urlRatingStars = $("#bname").data('url-rating-stars');
-            // var neighborhoods = $("#bname").data('neighborhoods');
-            // var crossStreets = $("#bname").data('cross-streets');
-            // var coordinates = $("#bname").data('coordinates');
+        $("a").on("click", function(evt) {
+            // var businessName = $("#savedata").data('name');
+            // var address = $("#savedata").data('address');
+            // var city = $("#savedata").data('city');
+            // var state = $("#savedata").data('state');
+            // var zipcode = $("#savedata").data('zipcode');
+            // var phone = $("#savedata").data('phone');
+            // var categories = $("#savedata").data('categories');
+            // var id = $("#savedata").data('id');
+            // var yelpUrl = $("#savedata").data('yelp-url');
+            // var rating = $("#savedata").data('rating');
+            // var urlRatingStars = $("#savedata").data('url-rating-stars');
+            // var neighborhoods = $("#savedata").data('neighborhoods');
+            // var crossStreets = $("#savedata").data('cross-streets');
+            // var coordinates = $("#savedata").data('coordinates');
             // all of the code above ^^ 
             // or this one line below vv
             var businessInfo = $(evt.currentTarget).data();
             console.log(businessInfo)
             alert('clicked!');
-            $.post('/profile')
+            $.get('/profile')
         });
 
         //data is saved in an object under the variable name businessInfo

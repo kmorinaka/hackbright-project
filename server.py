@@ -34,15 +34,14 @@ def search_results():
     return render_template('results.html', businesses=businesses)
 
 
-@app.route('/profile', methods=['POST'])
+@app.route('/profile', methods=['POST', 'GET'])
 def show_business_profile():
     """Show the specific info for one business
 
     LEFT OFF HERE. FIGURE OUT HOW TO PUT THE DATA ON 'profile.html'
     """
-    name = request.form['name']
 
-    return render_template('profile.html', name=name)
+    return render_template('profile.html')
 
 
 @app.route('/resources')
