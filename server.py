@@ -23,7 +23,7 @@ def index():
     return render_template('homepage.html')
 
 
-@app.route('/searchresults', methods=['GET'])
+@app.route('/searchresults', methods=['GET', 'POST'])
 def search_results():
     """Will show the list of businesses resulting from a search"""
     term = str(request.args.get('term'))
@@ -34,14 +34,22 @@ def search_results():
     return render_template('results.html', businesses=businesses)
 
 
-@app.route('/profile', methods=['POST', 'GET'])
-def show_business_profile():
+@app.route('/profile', methods=['POST'])
+def get_business_info():
     """Show the specific info for one business
 
     LEFT OFF HERE. FIGURE OUT HOW TO PUT THE DATA ON 'profile.html'
     """
+    #request.json is a dictionary with the data of the business clicked on
+    print request.form
 
     return render_template('profile.html')
+
+
+@app.route('/profile-name', methods=['GET'])
+def display_business_info():
+    """Display info on profile page for business"""
+    pass
 
 
 @app.route('/resources')

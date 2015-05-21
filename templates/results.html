@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-
+{% block title %}Search Results{% endblock %}
 {% block content %}
     <div class="container-fluid">
         <h1>Results:</h1>
@@ -8,12 +8,9 @@
         <div class="container" id="clickme">
             <ul>
                {% for business in businesses %}
-                <div class="savedata"
-                >
-                </div>
                
-                    <a href='/profile'
-                    data-name="{{ business['name'] }}"
+                    
+                    <span class="info" data-name="{{ business['name'] }}"
                 data-address="{{ business['address'] }}"
                 data-city="{{ business['city'] }}"
                 data-state="{{ business['state'] }}"
@@ -27,7 +24,9 @@
                 data-neighborhoods="{{ business['neighborhoods'] }}"
                 data-cross-streets="{{ business['cross_streets'] }}"
                 data-coordinates="{{ business['coordinates'] }}">
-                {{ business['name'] }}</a>
+            <a href='/profile'> {{ business['name'] }}</a></span>
+
+                
                     <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
                     <li>Phone number: {{ business['phone'] }}</li>
                     <li>Categories: {{ business['categories']}}</li>
@@ -37,29 +36,26 @@
         </div>
    </div>
     <script> 
+    //make url safe version of all data attributes  ?address=45Miss&city=
+        //use window.href to send a get request with all data attributes in the url
+
         //when they click on the business name, the function getProfile, gets the data from the data attributes
         $("a").on("click", function(evt) {
-            // var businessName = $("#savedata").data('name');
-            // var address = $("#savedata").data('address');
-            // var city = $("#savedata").data('city');
-            // var state = $("#savedata").data('state');
-            // var zipcode = $("#savedata").data('zipcode');
-            // var phone = $("#savedata").data('phone');
-            // var categories = $("#savedata").data('categories');
-            // var id = $("#savedata").data('id');
-            // var yelpUrl = $("#savedata").data('yelp-url');
-            // var rating = $("#savedata").data('rating');
-            // var urlRatingStars = $("#savedata").data('url-rating-stars');
-            // var neighborhoods = $("#savedata").data('neighborhoods');
-            // var crossStreets = $("#savedata").data('cross-streets');
-            // var coordinates = $("#savedata").data('coordinates');
-            // all of the code above ^^ 
-            // or this one line below vv
-            var businessInfo = $(evt.currentTarget).data();
-            console.log(businessInfo)
+            evt.preventDefault();
+            console.log($(evt.currentTarget));
+            // debugger;
+            var businessInfo = $(evt.currentTarget).context.parentNode.attributes;
+            console.log(businessInfo);
             alert('clicked!');
-            $.get('/profile')
+            
+            $.post('/profile', businessInfo, function(){
+                alert('i came back from the server')
+            });
         });
+
+        var form = document.createElement('FORM');
+        form
+
 
         //data is saved in an object under the variable name businessInfo
  
