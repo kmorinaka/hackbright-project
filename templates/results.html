@@ -10,7 +10,8 @@
                {% for business in businesses %}
                
                     
-                    <span class="info" data-name="{{ business['name'] }}"
+                    
+            <a href='/profile' data-name="{{ business['name'] }}"
                 data-address="{{ business['address'] }}"
                 data-city="{{ business['city'] }}"
                 data-state="{{ business['state'] }}"
@@ -23,8 +24,7 @@
                 data-url-rating-stars="{{ business['url_rating_stars'] }}"
                 data-neighborhoods="{{ business['neighborhoods'] }}"
                 data-cross-streets="{{ business['cross_streets'] }}"
-                data-coordinates="{{ business['coordinates'] }}">
-            <a href='/profile'> {{ business['name'] }}</a></span>
+                data-coordinates="{{ business['coordinates'] }}"> {{ business['name'] }}</a>
 
                 
                     <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
@@ -37,24 +37,19 @@
    </div>
     <script> 
     //make url safe version of all data attributes  ?address=45Miss&city=
-        //use window.href to send a get request with all data attributes in the url
+        //use window.href to send a get request with all data attributes in the 
 
         //when they click on the business name, the function getProfile, gets the data from the data attributes
         $("a").on("click", function(evt) {
             evt.preventDefault();
-            console.log($(evt.currentTarget));
-            // debugger;
-            var businessInfo = $(evt.currentTarget).context.parentNode.attributes;
-            console.log(businessInfo);
-            alert('clicked!');
-            
-            $.post('/profile', businessInfo, function(){
-                alert('i came back from the server')
-            });
+            // console.log($(evt.currentTarget));
+            // // debugger;
+            var params = $(evt.currentTarget).data();
+            var businessInfo = $.param(params);
+            // console.log(businessInfo);
+            // alert('clicked!');
+            window.location.href = "/profile?" + businessInfo;
         });
-
-        var form = document.createElement('FORM');
-        form
 
 
         //data is saved in an object under the variable name businessInfo

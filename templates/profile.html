@@ -8,13 +8,20 @@
 </script>
 <div>
     <div>
-       <h3>name</h3>
-           <ul>
-                <li>Data should show up here vvv</li>
-                <div class="result">
+           
+              
+                <div class="container-fluid">
+                    <h3><b>{{ name }}</b></h3>
+                    <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
+                    <p>Phone number: {{ phone }}</p>
+                    <p>Neighborhoods: {{ neighborhoods }}</p>
+                    <p>Cross streets: {{ cross_streets }}</p>
+                    <p>Categories: {{ categories }}</p>
+                    <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
+                    <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
 
                 </div>
-           </ul>
+           
 
 
     </div>

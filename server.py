@@ -34,16 +34,29 @@ def search_results():
     return render_template('results.html', businesses=businesses)
 
 
-@app.route('/profile', methods=['POST'])
+@app.route('/profile', methods=['POST', 'GET'])
 def get_business_info():
     """Show the specific info for one business
 
     LEFT OFF HERE. FIGURE OUT HOW TO PUT THE DATA ON 'profile.html'
     """
     #request.json is a dictionary with the data of the business clicked on
-    print request.form
+    name = request.args.get('name')
+    address = request.args.get('address')
+    city = request.args.get('city')
+    state = request.args.get('state')
+    zipcode = request.args.get('zipcode')
+    phone = request.args.get('phone')
+    neighborhoods = request.args.get('neighborhoods')
+    cross_streets = request.args.get('crossStreets')
+    categories = request.args.get('categories')
+    yelp_url = request.args.get('yelpUrl')
+    rating_stars = request.args.get('urlRatingStars')
 
-    return render_template('profile.html')
+    return render_template('profile.html', name=name, address=address, city=city,
+                           state=state, zipcode=zipcode, phone=phone, neighborhoods=neighborhoods,
+                           cross_streets=cross_streets, categories=categories, yelp_url=yelp_url,
+                           rating_stars=rating_stars)
 
 
 @app.route('/profile-name', methods=['GET'])
