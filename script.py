@@ -119,11 +119,11 @@ def query_api(term, location):
     for business in businesses:
         if 'display_phone' not in business:
             business['display_phone'] = 'N/A'
-        elif 'cross_streets' not in business['location']:
+        if 'cross_streets' not in business['location']:
             business['location']['cross_streets'] = 'N/A'
-        elif 'neighborhoods' not in business['location']:
+        if 'neighborhoods' not in business['location']:
             business['location']['neighborhoods'] = 'N/A'
-        elif 'coordinates' not in business['location']:
+        if 'coordinates' not in business['location']:
             business['location']['coordinates'] = 'N/A'
 
     # reformating each dictionary with the info I want to display in a huge list comprehension!
@@ -139,8 +139,8 @@ def query_api(term, location):
                   'yelp_url': business['url'], 'rating': business['rating'],
                   'categories': ', '.join([i[0] for i in business['categories']]),
                   'url_rating_stars': business['rating_img_url'],
-                  'neighborhoods': ', '.join(business['location']['neighborhoods']),
+                  'neighborhoods': ''.join(business['location']['neighborhoods']),
                   'cross_streets': business['location']['cross_streets'],
-                  'coordinates': (business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude'])} for business in businesses]
+                  'coordinates': [business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude']]} for business in businesses]
 
     return businesses

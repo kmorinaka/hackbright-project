@@ -24,7 +24,7 @@
 #              'tcby', 'white-castle', 'wing-street', 'round-table-pizza']
 # sport = ['big-5-sporting-goods', 'sports-authority', 'dicks-sporting-goods', 'bass-pro-shops']
 stores = ['walgreens', 'cvs', 'target', 'walmart', 'rite-aid', 'costco', 'kmart', 'barnes-and-noble', 'kohls',
-          'tjmaxx', 'homegoods', 'cost-plus-world-market', '7-11', 'best-buy', 'game-stop', 'toys-r-us', 'sephora',
+          'tjmaxx', 'homegoods', 'cost-plus-world-market', '7-11', '7-eleven', 'best-buy', 'game-stop', 'toys-r-us', 'sephora',
           'ulta', 'michaels', 'jo-ann-fabric-and-craft', 'hobby-lobby', 'a-c-moore-arts-and-crafts',
           'bed-bath-and-beyond', 'ikea', 'pier-1-imports', 'pier-one-imports', 'william-sonoma', 'the-home-depot',
           'lowes', 'bevmo', 'menards', 'staples', 'office-max', 'office-depot', 'sams-club',
@@ -33,7 +33,7 @@ stores = ['walgreens', 'cvs', 'target', 'walmart', 'rite-aid', 'costco', 'kmart'
           'fresh-and-easy', 'gelsons', 'jons', 'save-mart', 'smart-and-final', 'kroger', 'shoprite', 'shop-rite',
           'nordstrom', 'macys', 'ross', 'marshalls', 'aeropostale', 'american-apparel', 'american-eagle-outfitters',
           'anthropologie', 'avenue', 'barneys-new-york',  'eddie-bauer', 'bebe', 'bergdorf-goodman', 'bloomingdales',
-          'buffalo-exchange', 'charlotte-russe', 'charming-charlie', 'chicos', 'club-monaco', 'davids-bridal',
+          'charlotte-russe', 'charming-charlie', 'chicos', 'club-monaco', 'davids-bridal',
           'designer-bride', 'destination-bride', 'dillards', 'dsw-designer-shoe-warehouse', 'dkny',
           'express', 'foot-locker', 'forever-21', 'fred-segal', 'fredericks-of-hollywood', 'gap', 'gilly-hicks',
           'guess', 'gymboree', 'jcrew', 'lane-bryant', 'the-limited', 'saks-fifth-avenue', 'mens-warehouse',
@@ -53,4 +53,6 @@ stores = ['walgreens', 'cvs', 'target', 'walmart', 'rite-aid', 'costco', 'kmart'
           'california-pizza-kitchen', 'romanos-macaroni-grill', 'el-pollo-loco', 'wahoos-fish-tacos',
           'boston-market', 'tcby', 'white-castle', 'wing-street', 'round-table-pizza', 'big-5-sporting-goods',
           'sports-authority', 'dicks-sporting-goods', 'bass-pro-shops', 'petco', 'petsmart', 'wells-fargo',
-          'bank-of-america', 'chase-bank', 'citibank', 'stater-bros', 'pavillions', 'pinkberry', 'piraat-pizzeri']
+          'bank-of-america', 'chase-bank', 'citibank', 'stater-bros', 'pavillions', 'pinkberry', 'piraat-pizzeri',
+          'reasors',
+          'buffalo-exchange', 'goodwill-industries', 'the-salvation-army']

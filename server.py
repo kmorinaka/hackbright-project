@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
 from script import query_api
-from model import Business, connect_to_db, db
+# from model import Business, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -19,6 +19,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage"""
+    # r = "https://sitestream.twitter.com/1.1/site.json?follow=6253282"
 
     return render_template('homepage.html')
 
@@ -35,7 +36,7 @@ def search_results():
 
 
 @app.route('/profile', methods=['POST', 'GET'])
-def get_business_info():
+def display_business_info():
     """Show the specific info for one business
 
     LEFT OFF HERE. FIGURE OUT HOW TO PUT THE DATA ON 'profile.html'
@@ -59,11 +60,9 @@ def get_business_info():
                            rating_stars=rating_stars)
 
 
-@app.route('/profile-name', methods=['GET'])
-def display_business_info():
-    """Display info on profile page for business"""
-    pass
-
+# @app.route('/', methods=['GET'])
+# def display_info():
+  
 
 @app.route('/resources')
 def resource_articles():

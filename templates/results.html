@@ -1,58 +1,145 @@
 {% extends 'base.html' %}
 
-{% block title %}Search Results{% endblock %}
+{% block head %}
+
+    <title>Search Results</title>
+
+    <style>
+        html, body {width: 100%; height: 100%}
+        body {margin: 0; padding: 0; overflow:hidden;}
+        #map, #map-container {height: 600px; margin: 0px;}
+        #map-container {padding-top: 50px;}
+
+        
+    </style>
+
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+<!--     // <script src="/static/mapstyles.js"></script> -->
+  <!--   // <script src="/static/map.js"></script> -->
+ <script>   
+    
+    function initialize() {
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var businesses = {{ businesses|tojson|safe }}
+
+        var mapOptions = {
+              zoom: 12,
+              center: new google.maps.LatLng(businesses[0].coordinates[0], businesses[0].coordinates[1])
+            };
+
+        map = new google.maps.Map(
+            document.getElementById('map'),
+            mapOptions);
+
+        console.log('hello');
+     
+
+        for (var i=0; i < businesses.length; i++) {
+            var myLatLng = new google.maps.LatLng(businesses[i].coordinates[0], businesses[i].coordinates[1]);
+            
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: businesses[i].name
+             });
+        }
+        
+    };
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+// for business in businesses:
+// get the attribute data-coordinates (on the <a>)
+
+
+    // function createMarker(business, point) {
+    //     var latLng = new google.maps.latLng(coordinates) //fill in lat/lon from search results
+    //     var marker = new google.maps.Marker({
+    //         position: latLng,
+    //         map: map,
+    //         title: '',
+    //         icon: //optional, deal with later
+    //     })
+    // }
+    
+
+</script>
+{% endblock %}
+
+
 {% block content %}
     <div class="container-fluid">
-        <h1>Results:</h1>
-        <br>
-        <div class="container" id="clickme">
-            <ul>
-               {% for business in businesses %}
-               
-                    
-                    
-            <a href='/profile' data-name="{{ business['name'] }}"
-                data-address="{{ business['address'] }}"
-                data-city="{{ business['city'] }}"
-                data-state="{{ business['state'] }}"
-                data-zipcode="{{ business['zipcode'] }}"
-                data-phone="{{ business['phone'] }}"
-                data-categories="{{ business['categories'] }}"
-                data-id="{{ business['id'] }}"
-                data-yelp-url="{{ business['yelp_url'] }}"
-                data-rating="{{ business['rating'] }}"
-                data-url-rating-stars="{{ business['url_rating_stars'] }}"
-                data-neighborhoods="{{ business['neighborhoods'] }}"
-                data-cross-streets="{{ business['cross_streets'] }}"
-                data-coordinates="{{ business['coordinates'] }}"> {{ business['name'] }}</a>
+        <form id="search" method="GET" action="/searchresults">
+        <label>I'm looking for:
+            <input type="text" name="term">
+        </label>
 
+        <label>Location:
+            <input type="text" name="location">
+        </label>
+            <input type="submit" value="Search">
+            <!--change value to text i want on button-->
+    </form>
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Results:</h1>
+                <br>
                 
-                    <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
-                    <li>Phone number: {{ business['phone'] }}</li>
-                    <li>Categories: {{ business['categories']}}</li>
-                {% endfor %}
-                <br><br>
-            </ul>
-        </div>
-   </div>
+                    <ul>
+                       {% for business in businesses %}
+                       
+                            
+                            
+                    <a href='/profile' class="savedata "data-name="{{ business['name'] }}"
+                        data-address="{{ business['address'] }}"
+                        data-city="{{ business['city'] }}"
+                        data-state="{{ business['state'] }}"
+                        data-zipcode="{{ business['zipcode'] }}"
+                        data-phone="{{ business['phone'] }}"
+                        data-categories="{{ business['categories'] }}"
+                        data-id="{{ business['id'] }}"
+                        data-yelp-url="{{ business['yelp_url'] }}"
+                        data-rating="{{ business['rating'] }}"
+                        data-url-rating-stars="{{ business['url_rating_stars'] }}"
+                        data-neighborhoods="{{ business['neighborhoods'] }}"
+                        data-cross-streets="{{ business['cross_streets'] }}"
+                        data-coordinates="{{ business['coordinates'] }}"> {{ business['name'] }}</a>
+
+                        
+                            <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
+                            <li>Phone number: {{ business['phone'] }}</li>
+                            <li>Categories: {{ business['categories']}}</li>
+                            <li>Coordinates: {{business['coordinates'] }}</li>
+                        {% endfor %}
+                        <br><br>
+                    </ul>
+            </div>
+            <div class="col-md-6">
+                <div id="map-container"><div id="map"></div></div>
+            </div>
+        </div> <!-- closes the row -->
+        
+    </div>
+    
+    
     <script> 
     //make url safe version of all data attributes  ?address=45Miss&city=
-        //use window.href to send a get request with all data attributes in the 
+        // use window.href to send a get request with all data attributes in the 
 
-        //when they click on the business name, the function getProfile, gets the data from the data attributes
-        $("a").on("click", function(evt) {
+        // when they click on the business name, the function getProfile, gets the data from the data attributes
+        $(".savedata").on("click", function(evt) {
+            // prevents the routing href=/ on the <a>
             evt.preventDefault();
-            // console.log($(evt.currentTarget));
-            // // debugger;
+            // takes all the things on current target ('a') and turns it to a data object, setting that obj to variable params
             var params = $(evt.currentTarget).data();
+            // .param() formats data object into parameter info
             var businessInfo = $.param(params);
-            // console.log(businessInfo);
-            // alert('clicked!');
+            // debugging: console.log(businessInfo);
+            // debugging: alert('clicked!');
+            // pass the new formatted parameter info to the url attaching to '/profile' route
             window.location.href = "/profile?" + businessInfo;
         });
-
-
-        //data is saved in an object under the variable name businessInfo
  
     </script>
     <!--
@@ -67,11 +154,5 @@
     link to yelp
     map?
 
-    yelp html to display star ratings
-
-        <i class="star-img stars_4_half" title="4.5 star rating">
-            <img alt="4.5 star rating" class="offscreen" height="303" src="//s3-media4.fl.yelpcdn.com/assets/srv0/yelp_styleguide/c2252a4cd43e/assets/img/stars/stars_map.png" width="84">
-        </i>
-    
     -->
 {% endblock %}
