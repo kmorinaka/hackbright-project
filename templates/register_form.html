@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Account {% endblock %}
+
+{% block content %}
+
+<form action="/register" method="POST">
+
+    <div class="form-group">
+        <label>
+            Username
+            <input type="text" name="username" class="form-control">
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            Password
+            <input type="password" name="password" class="form-control">
+        </label>
+    </div>
+    
+    <div class="form-group">
+        <label>
+            Email
+            <input type="email" name="email" class="form-control">
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            City
+            <input type="text" name="city" class="form-control">
+            State
+            <input type="text" name="state" class="form-control">
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            Age
+            <input type="number" name="age" class="form-control">
+        </label>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Register, Mortal" class="btn btn-danger">
+    </div>
+
+</form>
+{% endblock %}

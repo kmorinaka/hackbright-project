@@ -53,6 +53,6 @@ stores = ['walgreens', 'cvs', 'target', 'walmart', 'rite-aid', 'costco', 'kmart'
           'california-pizza-kitchen', 'romanos-macaroni-grill', 'el-pollo-loco', 'wahoos-fish-tacos',
           'boston-market', 'tcby', 'white-castle', 'wing-street', 'round-table-pizza', 'big-5-sporting-goods',
           'sports-authority', 'dicks-sporting-goods', 'bass-pro-shops', 'petco', 'petsmart', 'wells-fargo',
-          'bank-of-america', 'chase-bank', 'citibank', 'stater-bros', 'pavillions', 'pinkberry', 'piraat-pizzeri',
+          'bank-of-america', 'chase-bank', 'citibank', 'stater-bros', 'pavilions', 'pinkberry', 'piraat-pizzeri',
           'reasors',
           'buffalo-exchange', 'goodwill-industries', 'the-salvation-army']

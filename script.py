@@ -95,7 +95,7 @@ def get_business(business_id):
 def query_api(term, location):
     """Queries the API by input values from the user.
 
-    Args:
+    Arsearchgs:
         term(str): The search term to query.
         location(str): The location of the business to the query.
     """
