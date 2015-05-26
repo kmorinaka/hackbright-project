@@ -39,14 +39,25 @@
                         <li><a href="/resources">Resources</a></li>
                     </ul>
                     <ul class="navbar-right nav navbar-nav">
-                        <li><a href="/register">Sign Up!</a></li>
-                        <li><a href="/login">Log In!</a></li>
+                      {% if "user_id" in session %}
+                        <li><a href="/userprofile">User Profile</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                      {% else %}
+                        <li><a href="/register">Sign Up</a></li>
+                        <li><a href="/login">Login</a></li>
+                      {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
-        <!-- make this form smaller or jquery-ify it making it appear when you click -->
-        
+       
+<div class="container">
+     <!-- so that my flash messages show up on html vvv jinja code-->
+    {% for flash in get_flashed_messages() %}
+        <div class="alert alert-info">{{ flash }}</div>
+    {% endfor %}
+</div>
+
         {% block content %}
         <!--body content from other html pages-->
         {% endblock %}

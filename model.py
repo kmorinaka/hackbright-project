@@ -9,8 +9,14 @@ class Business(db.Model):
 
     __tablename__ = "businesses"
 
-    index = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    business_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     yelp_id = db.Column(db.String(60), nullable=True)
+    """saving more yelp info to db so i can show it on user's profile page
+    rather than re query???"""
+
+    # define relationship to users table- only need to do in one class
+    # params for relationship(class name, table name, name to call class Business/table businesses
+    users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
 
     def __repr__(self):
         """provides helpful representation when printed"""
@@ -36,24 +42,19 @@ class User(db.Model):
 
         return "<User name=%s>" % (self.username)
 
-    """This will be an association table? maybe? i dont know
-    VVVVVVVV
-    user has saved many businesses
-    business is saved by many users"""
 
-# class Unknown(db.Model):
-#     __tablename__ = "users"
+class UserBusinessLink(db.Model):
+    """Association table of users and the businesses they save to their account"""
 
-#     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     yelp_id = db.Column(db.String(64), nullable=False, foreign_key=True)
-#     email = db.Column(db.String(64), nullable=False)
-#     password = db.Column(db.String(64), nullable=False)
-#     gender = db.Column(db.String(10), nullable=True)
+    __tablename__ = 'users_businesses'
 
-#     def __repr__(self):
-#         """provides helpful representation when printed"""
-
-#         return "<User name=%s>" % (self.user_name)
+    user_business_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        primary_key=True)
+    business_id = db.Column(db.Integer,
+                            db.ForeignKey('businesses.business_id'),
+                            primary_key=True)
 
 
 def connect_to_db(app):

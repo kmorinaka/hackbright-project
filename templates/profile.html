@@ -3,28 +3,45 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
- <script>
-       
-</script>
+ 
 <div>
     <div>
            
               
-                <div class="container-fluid">
-                    <h3><b>{{ name }}</b></h3>
-                    <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
-                    <p>Phone number: {{ phone }}</p>
-                    <p>Neighborhoods: {{ neighborhoods }}</p>
-                    <p>Cross streets: {{ cross_streets }}</p>
-                    <p>Categories: {{ categories }}</p>
-                    <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
-                    <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
-
-                </div>
-           
+        <div class="container-fluid">
+  
+            <h3><b>{{ name }}</b></h3>
+            <button class="save" type="button"
+                data-name="{{ name }}"
+                data-address="{{ address }}"
+                data-city="{{ city }}"
+                data-state="{{ state }}"
+                data-zipcode="{{ zipcode }}"
+                data-phone="{{ phone }}"
+                data-neighborhoods="{{ neighborhoods }}"
+                data-cross-streets="{{ cross_streets }}"
+                data-yelp-url="{{ yelp_url }}">Save</button>
+            <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
+            <p>Phone number: {{ phone }}</p>
+            <p>Neighborhoods: {{ neighborhoods }}</p>
+            <p>Cross streets: {{ cross_streets }}</p>
+            <p>Categories: {{ categories }}</p>
+            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
+            <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
+        </div>
+   
 
 
     </div>
 </div>
+<script>
+       $(".save").on("click", function(evt) {
+        // event listener when click on button
+            alert('button works');
+            var businessInfo = $(evt.currentTarget).data();
+            console.log(businessInfo)
+            $.post('/saving', businessInfo);
 
+       });
+</script>
 {% endblock %}

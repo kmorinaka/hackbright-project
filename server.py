@@ -42,10 +42,8 @@ def search_results():
 
 @app.route('/profile', methods=['POST', 'GET'])
 def display_business_info():
-    """Show the specific info for one business
+    """Show the specific info for one business"""
 
-    LEFT OFF HERE. FIGURE OUT HOW TO PUT THE DATA ON 'profile.html'
-    """
     #request.json is a dictionary with the data of the business clicked on
     name = request.args.get('name')
     address = request.args.get('address')
@@ -58,6 +56,16 @@ def display_business_info():
     categories = request.args.get('categories')
     yelp_url = request.args.get('yelpUrl')
     rating_stars = request.args.get('urlRatingStars')
+    yelp_id = request.args.get('id')
+
+    # q = Business.query.filter_by(yelp_id=yelp_id).all()
+
+    # if q:
+    #     return # yelp_id is already in the table
+    # else:
+    #     add_yelp_id = Business(yelp_id=yelp_id)
+    #     db.session.add(add_yelp_id)
+    #     db.session.commit
 
     return render_template('profile.html', name=name, address=address, city=city,
                            state=state, zipcode=zipcode, phone=phone, neighborhoods=neighborhoods,
@@ -96,7 +104,7 @@ def register_process():
         db.session.add(new_user)
         db.session.commit()
         # username = new_user.username
-        # print username
+        # # print username
         # session['username'] = username
         # print session
 
@@ -114,23 +122,40 @@ def login_page():
 @app.route('/login', methods=['POST'])
 def user_login():
     """Process login"""
-    # username = request.form['username']
-    # password = request.form['password']
+    username = request.form['username']
+    password = request.form['password']
 
-    #going to query the database to see if they are in db
-    #user = User.query.filter_by(username=username).first()
-    # if not user:
-    #     flash("No such user")
-    #     return redirect("/login")
+    # going to query the database to see if they are in db
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        flash("No such user")
+        return redirect("/login")
 
-    # if user.password != password:
-    #     flash("Incorrect password")
-    #     return redirect("/login")
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/login")
 
-    # session["user_id"] = user.user_id
+    session["user_id"] = user.user_id
 
-    # flash("Logged in")
-    # return redirect("/users/%s" % user.user_id)
+    flash("Logged in")
+    return redirect("/users/%s" % user.user_id)
+
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+    del session["user_id"]
+    flash("Logged Out.")
+    return redirect("/")
+
+
+@app.route('/saving')
+def save_info():
+    """when the user is logged in, they save the business info to db"""
+    name = request.args.get('name')
+
+    return "the ajax post request worked"
 
 
 @app.route('/resources')
