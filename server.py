@@ -40,7 +40,7 @@ def search_results():
                                term=term, location=location)
 
 
-@app.route('/profile', methods=['POST', 'GET'])
+@app.route('/details/', methods=['POST', 'GET'])
 def display_business_info():
     """Show the specific info for one business"""
 
@@ -56,21 +56,12 @@ def display_business_info():
     categories = request.args.get('categories')
     yelp_url = request.args.get('yelpUrl')
     rating_stars = request.args.get('urlRatingStars')
-    yelp_id = request.args.get('id')
+    yelp_id = request.args.get('yelpId')
 
-    # q = Business.query.filter_by(yelp_id=yelp_id).all()
-
-    # if q:
-    #     return # yelp_id is already in the table
-    # else:
-    #     add_yelp_id = Business(yelp_id=yelp_id)
-    #     db.session.add(add_yelp_id)
-    #     db.session.commit
-
-    return render_template('profile.html', name=name, address=address, city=city,
+    return render_template('details.html', name=name, address=address, city=city,
                            state=state, zipcode=zipcode, phone=phone, neighborhoods=neighborhoods,
                            cross_streets=cross_streets, categories=categories, yelp_url=yelp_url,
-                           rating_stars=rating_stars)
+                           rating_stars=rating_stars, yelp_id=yelp_id)
 
 
 @app.route('/register', methods=['GET'])
@@ -138,7 +129,8 @@ def user_login():
     session["user_id"] = user.user_id
 
     flash("Logged in")
-    return redirect("/users/%s" % user.user_id)
+    return redirect('/')
+    # return redirect("/users/%s" % user.user_id)
 
 
 @app.route('/logout')
@@ -150,10 +142,10 @@ def logout():
     return redirect("/")
 
 
-@app.route('/saving')
+@app.route('/saving', methods=['POST'])
 def save_info():
     """when the user is logged in, they save the business info to db"""
-    name = request.args.get('name')
+    name = request.form.get('name')
 
     return "the ajax post request worked"
 

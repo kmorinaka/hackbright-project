@@ -91,14 +91,14 @@
                        
                             
                             
-                    <a href='/profile' class="savedata "data-name="{{ business['name'] }}"
+                    <a href='/details' class="savedata "data-name="{{ business['name'] }}"
                         data-address="{{ business['address'] }}"
                         data-city="{{ business['city'] }}"
                         data-state="{{ business['state'] }}"
                         data-zipcode="{{ business['zipcode'] }}"
                         data-phone="{{ business['phone'] }}"
                         data-categories="{{ business['categories'] }}"
-                        data-id="{{ business['id'] }}"
+                        data-yelp-id="{{ business['id'] }}"
                         data-yelp-url="{{ business['yelp_url'] }}"
                         data-rating="{{ business['rating'] }}"
                         data-url-rating-stars="{{ business['url_rating_stars'] }}"
@@ -127,7 +127,7 @@
     //make url safe version of all data attributes  ?address=45Miss&city=
         // use window.href to send a get request with all data attributes in the 
 
-        // when they click on the business name, the function getProfile, gets the data from the data attributes
+        // when they click on the business name, the function getDetails, gets the data from the data attributes
         $(".savedata").on("click", function(evt) {
             // prevents the routing href=/ on the <a>
             evt.preventDefault();
@@ -137,8 +137,8 @@
             var businessInfo = $.param(params);
             // debugging: console.log(businessInfo);
             // debugging: alert('clicked!');
-            // pass the new formatted parameter info to the url attaching to '/profile' route
-            window.location.href = "/profile?" + businessInfo;
+            // pass the new formatted parameter info to the url attaching to '/details' route
+            window.location.href = "/details?" + businessInfo;
         });
  
     </script>

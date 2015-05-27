@@ -115,17 +115,6 @@ def query_api(term, location):
     businesses = [get_business(business_id) for business_id in list_ids]
     # businesses is a list of dictionaries. One for each result.
 
-    # accouting for missing info
-    for business in businesses:
-        if 'display_phone' not in business:
-            business['display_phone'] = 'N/A'
-        if 'cross_streets' not in business['location']:
-            business['location']['cross_streets'] = 'N/A'
-        if 'neighborhoods' not in business['location']:
-            business['location']['neighborhoods'] = 'N/A'
-        if 'coordinates' not in business['location']:
-            business['location']['coordinates'] = 'N/A'
-
     # reformating each dictionary with the info I want to display in a huge list comprehension!
 
     # NOTE: neighborhoods is still displaying in list [] on screen
@@ -134,13 +123,16 @@ def query_api(term, location):
                   'city': business['location']['city'],
                   'state': business['location']['state_code'],
                   'zipcode': business['location']['postal_code'],
-                  'phone': business['display_phone'],
+                  'phone': business.get('display_phone'),
                   'id': business['id'],
                   'yelp_url': business['url'], 'rating': business['rating'],
                   'categories': ', '.join([i[0] for i in business['categories']]),
                   'url_rating_stars': business['rating_img_url'],
-                  'neighborhoods': ''.join(business['location']['neighborhoods']),
-                  'cross_streets': business['location']['cross_streets'],
+                  'neighborhoods': ', '.join(business['location'].get('neighborhoods', [])) or None,
+                  # getting the key if exists, joining into string
+                  # if doesnt exist, set value to empty list
+                  # joining an empty list is false, so set value to none (using or)
+                  'cross_streets': business['location'].get('cross_streets', []) or None,
                   'coordinates': [business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude']]} for business in businesses]
 
     return businesses
