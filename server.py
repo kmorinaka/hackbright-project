@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
 from script import query_api
-from model import Business, User, connect_to_db, db
+from model import Business, User, UserBusinessLink, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -54,14 +54,20 @@ def display_business_info():
     neighborhoods = request.args.get('neighborhoods')
     cross_streets = request.args.get('crossStreets')
     categories = request.args.get('categories')
+    latitude = request.args.get('latitude')
+    longitude = request.args.get('longitude')
     yelp_url = request.args.get('yelpUrl')
     rating_stars = request.args.get('urlRatingStars')
     yelp_id = request.args.get('yelpId')
 
+    print latitude
+    print longitude
+
     return render_template('details.html', name=name, address=address, city=city,
                            state=state, zipcode=zipcode, phone=phone, neighborhoods=neighborhoods,
                            cross_streets=cross_streets, categories=categories, yelp_url=yelp_url,
-                           rating_stars=rating_stars, yelp_id=yelp_id)
+                           rating_stars=rating_stars, yelp_id=yelp_id, latitude=latitude,
+                           longitude=longitude)
 
 
 @app.route('/register', methods=['GET'])
@@ -81,25 +87,23 @@ def register_process():
     age = int(request.form["age"])
     username = request.form["username"]
     city = request.form["city"]  # reformat city name to all lower case
-    state = request.form["state"]  # Make form only accept state code 'CA'
+    state = request.form["state"]  # dropdown! yay
 
     q = User.query.filter_by(username=username).all()
 
     if q:
-        flash("This user already had an account.")
-        return redirect('/login')
+        flash("This username already exists.")
+        return redirect('/register')
     else:
         new_user = User(email=email, username=username, password=password,
                         age=age, city=city, state=state)
 
         db.session.add(new_user)
         db.session.commit()
-        # username = new_user.username
-        # # print username
-        # session['username'] = username
-        # print session
 
-        flash("User %s added." % username)
+        session["user_id"] = new_user.user_id
+
+        flash("User %s added. You are now logged in." % username)
         return redirect('/')
 
 
@@ -145,9 +149,74 @@ def logout():
 @app.route('/saving', methods=['POST'])
 def save_info():
     """when the user is logged in, they save the business info to db"""
+
+    yelp_id = request.form.get('yelpId')
     name = request.form.get('name')
+    address = request.form.get('address')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    zipcode = request.form.get('zipcode')
+    phone = request.form.get('phone')
+    neighborhoods = request.form.get('neighborhoods')
+    cross_streets = request.form.get('crossStreets')
+    yelp_url = request.form.get('yelpUrl')
+    latitude = float(request.form.get('latitude'))
+    longitude = float(request.form.get('longitude'))
+
+    # get username for user that is logged in
+    user_id = session['user_id']
+
+    # query to see if this business is in database
+    q = Business.query.filter_by(yelp_id=yelp_id).first()
+
+    if not q:
+    # if NOT in database, add to database AND association table
+        new_business = Business(yelp_id=yelp_id, name=name, address=address,
+                                city=city, state=state, zipcode=zipcode, phone=phone,
+                                neighborhoods=neighborhoods, cross_streets=cross_streets,
+                                yelp_url=yelp_url, latitude=latitude, longitude=longitude)
+        print new_business
+        db.session.add(new_business)
+        db.session.commit()
+    # pulling out name from the new_business added above, setting to var business_name
+        business_id = new_business.business_id
+    # addding to association table
+        new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
+
+        db.session.add(new_association)
+        db.session.commit()
+    else:
+    # if IN database, add ONLY to association table
+    # getting the business by querying by
+        b = Business.query.filter_by(yelp_id=yelp_id).first()
+        business_id = b.business_id
+
+        q = UserBusinessLink.query.filter_by(user_id=user_id, business_id=business_id).first()
+        if not q:
+            # if the association doesn exist
+            business_id = b.business_id
+            new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
+
+            db.session.add(new_association)
+            db.session.commit()
 
     return "the ajax post request worked"
+
+
+@app.route('/userprofile')
+def display_user_profile():
+    """Display the user's info and the info of businesses they saved"""
+    # pulls the username for user that is logged in
+    user_id = session['user_id']
+    print user_id  # correct!
+    # querying the db base on username
+    user = User.query.get(user_id)
+
+    # user.businesses is a list of objects.
+    # prints like -> [<Business name=bi-rite-creamer-san-francisco>] bc __repr__
+    businesses = user.businesses
+
+    return render_template("profile.html", user=user, businesses=businesses)
 
 
 @app.route('/resources')

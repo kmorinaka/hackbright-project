@@ -4,15 +4,23 @@ db = SQLAlchemy()
 
 
 class Business(db.Model):
-    """Saving yelp business_id, adding it to the db as the yelp_id
-        use this id to query the Yelp API later, to display user saved info."""
+    """When a user saves a business, add info to database."""
 
     __tablename__ = "businesses"
 
     business_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    yelp_id = db.Column(db.String(60), nullable=True)
-    """saving more yelp info to db so i can show it on user's profile page
-    rather than re query???"""
+    yelp_id = db.Column(db.String(60), nullable=False, unique=True)
+    name = db.Column(db.String(20), nullable=True)
+    address = db.Column(db.String(20), nullable=True)
+    city = db.Column(db.String(60), nullable=True)
+    state = db.Column(db.String(2), nullable=True)  # state code
+    zipcode = db.Column(db.String(5), nullable=True)
+    phone = db.Column(db.String(60), nullable=True)  # better consistent format?
+    neighborhoods = db.Column(db.String(60), nullable=True)
+    cross_streets = db.Column(db.String(60), nullable=True)
+    yelp_url = db.Column(db.String(100), nullable=True)
+    latitude = db.Column(db.Float(30), nullable=True)
+    longitude = db.Column(db.Float(30), nullable=True)
 
     # define relationship to users table- only need to do in one class
     # params for relationship(class name, table name, name to call class Business/table businesses
@@ -50,11 +58,9 @@ class UserBusinessLink(db.Model):
 
     user_business_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'),
-                        primary_key=True)
+                        db.ForeignKey('users.user_id'))
     business_id = db.Column(db.Integer,
-                            db.ForeignKey('businesses.business_id'),
-                            primary_key=True)
+                            db.ForeignKey('businesses.business_id'))
 
 
 def connect_to_db(app):

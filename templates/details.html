@@ -12,7 +12,8 @@
           {% if "user_id" in session %}
           <!-- if the user is logged in, button exists -->
             <h3><b>{{ name }}</b></h3>
-            <button class="save" type="button"
+            <button class="save" type="button"  
+                data-yelp-id="{{ yelp_id }}"
                 data-name="{{ name }}"
                 data-address="{{ address }}"
                 data-city="{{ city }}"
@@ -22,7 +23,8 @@
                 data-neighborhoods="{{ neighborhoods }}"
                 data-cross-streets="{{ cross_streets }}"
                 data-yelp-url="{{ yelp_url }}"
-                data-yelp-id="{{ yelp_id }}">Save</button>
+                data-latitude="{{ latitude }}"
+                data-longitude ="{{ longitude }}">Save</button>
             <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
             <p>Phone number: {{ phone }}</p>
             <p>Neighborhoods: {{ neighborhoods }}</p>
@@ -49,9 +51,10 @@
     </div>
 </div>
 <script>
+        // only let user click on button once
        $(".save").on("click", function(evt) {
         // event listener when click on button
-            alert('button works');
+            alert('You saved this business to your profile!');
             var businessInfo = $(evt.currentTarget).data();
             console.log(businessInfo)
             $.post('/saving', businessInfo);

@@ -1,5 +1,5 @@
 
-
+onclick="if(submitted)this.disabled = true"
 
 query_api('grocery', 'san francisco, ca')
 

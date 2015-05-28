@@ -117,7 +117,6 @@ def query_api(term, location):
 
     # reformating each dictionary with the info I want to display in a huge list comprehension!
 
-    # NOTE: neighborhoods is still displaying in list [] on screen
     businesses = [{'name': business['name'],
                   'address': ' '.join(business['location']['address']),
                   'city': business['location']['city'],
@@ -132,7 +131,9 @@ def query_api(term, location):
                   # getting the key if exists, joining into string
                   # if doesnt exist, set value to empty list
                   # joining an empty list is false, so set value to none (using or)
-                  'cross_streets': business['location'].get('cross_streets', []) or None,
-                  'coordinates': [business['location']['coordinate']['latitude'], business['location']['coordinate']['longitude']]} for business in businesses]
+                  'cross_streets': business['location'].get('cross_streets'),
+                  # separated latitude and longitude, does NOT account for non existent coordinates
+                  'latitude': business['location']['coordinate']['latitude'],
+                  'longitude': business['location']['coordinate']['longitude']} for business in businesses]
 
     return businesses

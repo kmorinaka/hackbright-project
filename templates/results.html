@@ -25,7 +25,7 @@
 
         var mapOptions = {
               zoom: 12,
-              center: new google.maps.LatLng(businesses[0].coordinates[0], businesses[0].coordinates[1])
+              center: new google.maps.LatLng(businesses[0].latitude, businesses[0].longitude)
             };
 
         map = new google.maps.Map(
@@ -36,7 +36,7 @@
      
 
         for (var i=0; i < businesses.length; i++) {
-            var myLatLng = new google.maps.LatLng(businesses[i].coordinates[0], businesses[i].coordinates[1]);
+            var myLatLng = new google.maps.LatLng(businesses[i].latitude, businesses[i].longitude);
             
             var marker = new google.maps.Marker({
                 position: myLatLng,
@@ -81,17 +81,15 @@
             <input type="submit" value="Search">
             <!--change value to text i want on button-->
     </form>
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Results:</h1>
-                <br>
-                <p>Your search for {{ term }} returned {{ num_res }} results in {{ location }}</p>
-                    <ul>
-                       {% for business in businesses %}
-                       
+      <div class="row">
+        <div class="col-md-6">
+              <h1>Results:</h1>
+              <br>
+              <p>Your search for {{ term }} returned {{ num_res }} results in {{ location }}</p>
+                <ul>
+                  {% for business in businesses %}        
                             
-                            
-                    <a href='/details' class="savedata "data-name="{{ business['name'] }}"
+                  <a href='/details' class="savedata "data-name="{{ business['name'] }}"
                         data-address="{{ business['address'] }}"
                         data-city="{{ business['city'] }}"
                         data-state="{{ business['state'] }}"
@@ -104,21 +102,34 @@
                         data-url-rating-stars="{{ business['url_rating_stars'] }}"
                         data-neighborhoods="{{ business['neighborhoods'] }}"
                         data-cross-streets="{{ business['cross_streets'] }}"
-                        data-coordinates="{{ business['coordinates'] }}"> {{ business['name'] }}</a>
-
+                        data-latitude="{{ business['latitude'] }}"
+                        data-longitude="{{ business['longitude'] }}">
+                        {{ business['name'] }}</a> 
                         
-                            <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
-                            <li>Phone number: {{ business['phone'] }}</li>
-                            <li>Categories: {{ business['categories']}}</li>
-                            <li>Coordinates: {{business['coordinates'] }}</li>
-                        {% endfor %}
-                        <br><br>
-                    </ul>
+                          <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
+                      
+                      {% if business['phone'] %}
+                          <li>Phone number: {{ business['phone'] }}</li>
+                      {% else %}
+                          <li>Phone number: N/A</li>
+                      {% endif %}
+                        
+                      {% if business['categories'] %}
+                          <li>Categories: {{ business['categories'] }}</li>
+                      {% else %}
+                          <li>Categories: N/A</li>
+                      {% endif %}
+
+                  {% endfor %}
+                      <br><br>
+                </ul>
+          </div>
+          <div class="col-md-6">
+            <div id="map-container">
+              <div id="map"></div>
             </div>
-            <div class="col-md-6">
-                <div id="map-container"><div id="map"></div></div>
-            </div>
-        </div> <!-- closes the row -->
+        </div>
+      </div> <!-- closes the row -->
         
     </div>
     
@@ -133,6 +144,7 @@
             evt.preventDefault();
             // takes all the things on current target ('a') and turns it to a data object, setting that obj to variable params
             var params = $(evt.currentTarget).data();
+            console.log(params)
             // .param() formats data object into parameter info
             var businessInfo = $.param(params);
             // debugging: console.log(businessInfo);

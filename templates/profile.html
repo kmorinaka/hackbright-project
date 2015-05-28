@@ -1,60 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}Details{% endblock %}
+{% block title %}User Profile{% endblock %}
 
 {% block content %}
  
 <div>
-    <div>
-           
-              
-        <div class="container-fluid">
-          {% if "user_id" in session %}
-          <!-- if the user is logged in, button exists -->
-            <h3><b>{{ name }}</b></h3>
-            <button class="save" type="button"
-                data-name="{{ name }}"
-                data-address="{{ address }}"
-                data-city="{{ city }}"
-                data-state="{{ state }}"
-                data-zipcode="{{ zipcode }}"
-                data-phone="{{ phone }}"
-                data-neighborhoods="{{ neighborhoods }}"
-                data-cross-streets="{{ cross_streets }}"
-                data-yelp-url="{{ yelp_url }}">Save</button>
-            <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
-            <p>Phone number: {{ phone }}</p>
-            <p>Neighborhoods: {{ neighborhoods }}</p>
-            <p>Cross streets: {{ cross_streets }}</p>
-            <p>Categories: {{ categories }}</p>
-            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
-            <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
-                
-          {% else %}
-          <!-- else, no button -->
-            <h3><b>{{ name }}</b></h3>    
-            <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
-            <p>Phone number: {{ phone }}</p>
-            <p>Neighborhoods: {{ neighborhoods }}</p>
-            <p>Cross streets: {{ cross_streets }}</p>
-            <p>Categories: {{ categories }}</p>
-            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
-            <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
-          {% endif %}
-        </div>
-   
-
-
+  <div class="container-fluid">    
+    <div class="userinfo">
+        <h3><b>{{ user.username }}</b></h3>
+        <p>You live in: {{ user.city }}, {{ user.state }}</p>
+        <p>Email: {{ user.email }}</p>
     </div>
-</div>
-<script>
-       $(".save").on("click", function(evt) {
-        // event listener when click on button
-            alert('button works');
-            var businessInfo = $(evt.currentTarget).data();
-            console.log(businessInfo)
-            $.post('/saving', businessInfo);
 
-       });
-</script>
+    <div class="businesses">
+        
+    </div>
+
+
+  </div>
+</div>
+
 {% endblock %}
