@@ -54,10 +54,12 @@
         // only let user click on button once
        $(".save").on("click", function(evt) {
         // event listener when click on button
-            alert('You saved this business to your profile!');
+            
             var businessInfo = $(evt.currentTarget).data();
             console.log(businessInfo)
-            $.post('/saving', businessInfo);
+            $.post('/saving', businessInfo, function(result){
+                alert('You saved this business to your profile!');
+            });
 
        });
 </script>

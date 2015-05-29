@@ -26,7 +26,7 @@ class Business(db.Model):
     # define relationship to users table- only need to do in one class
     # params for relationship(class name, table name, name to call class Business/table businesses
     users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
-    attributes = db.relationship("Attribute", secondary='users_businesses')
+    attributes = db.relationship("UserBusinessAttr", backref=db.backref("businesses"))
 
     def __repr__(self):
         """provides helpful representation when printed"""
@@ -58,11 +58,10 @@ class Attribute(db.Model):
 
     __tablename__ = "attributes"
 
-    attr_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(20), nullable=True)
+    name = db.Column(db.String(20), primary_key=True)
 
 
-class UserBusinessLink(db.Model):
+class UserBusinessAttr(db.Model):
     """Association table of users and the businesses they save to their account"""
 
     __tablename__ = 'users_businesses'
@@ -72,8 +71,8 @@ class UserBusinessLink(db.Model):
                         db.ForeignKey('users.user_id'))
     business_id = db.Column(db.Integer,
                             db.ForeignKey('businesses.business_id'))
-    attr_id = db.Column(db.Integer,
-                        db.ForeignKey('attributes.attr_id'))
+    name = db.Column(db.String(20),
+                     db.ForeignKey('attributes.name'))
 
 
 def connect_to_db(app):

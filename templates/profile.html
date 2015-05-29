@@ -9,9 +9,11 @@
         body {margin: 0; padding: 0; overflow:hidden;}
         #map, #map-container {height: 600px; margin: 0px;}
         #map-container {padding-top: 50px;}
-
-        
-    </style>
+        .iconsize {height: 24px; width: 24px;}
+        .unselected{opacity: 0.4;}
+        #cashicon {height: 30px; width: 30px;}
+        .selected {opacity: 100;}
+</style>
 
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
@@ -63,31 +65,40 @@
             <p>Email: {{ user.email }}</p>
         </div>
         <br><br>
-        <div class="businesses">
+        <div>
             <h4><u>Your Saved Businesses:</u></h4>
             {% for business in businesses %}
-                <ul>
-                    <p><b>{{ business.name }}</b><img src="/static/friendly.pgn" /></p>
-                    <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
+                <div class="business" id="{{ business.business_id }}">
 
-                {% if business.phone %}
-                    <li>Phone number: {{ business.phone }}</li>
-                {% else %}
-                    <li>Phone number: N/A</li>
-                {% endif %}
-                        
-                {% if business.cross_streets %}
-                    <li>Cross streets: {{ business.cross_streets }}</li>
-                {% else %}
-                    <li>Cross streets: N/A</li>
-                {% endif %}
-                  
-                </ul>  
+                    <p class="icons"><b>{{ business.name }}</b>
+                        <img id="goodfood" class="unselected iconsize" src="/static/goodfood.png" />
+                        <img id="clean" class="unselected iconsize" src="/static/clean.png" />
+                        <img id="ecofriendly" class="unselected iconsize" src="/static/ecofriendly.png" />
+                        <img id="friendly" class="unselected iconsize" src="/static/friendly.png" />
+                        <img id="wifi" class="unselected iconsize" src="/static/wifi.png" />
+                        <img id="cashicon" class="unselected iconsize" src="/static/cashonly.png" /></p>
+                    <ul>
+                        <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
+
+                    {% if business.phone %}
+                        <li>Phone number: {{ business.phone }}</li>
+                    {% else %}
+                        <li>Phone number: N/A</li>
+                    {% endif %}
+                            
+                    {% if business.cross_streets %}
+                        <li>Cross streets: {{ business.cross_streets }}</li>
+                    {% else %}
+                        <li>Cross streets: N/A</li>
+                    {% endif %}
+                      
+                    </ul>
+                </div>      
             {% endfor %}
         </div>
 
 
-      </div> <!-- closes container with userinfo and businesses -->
+      </div> <!-- closes left column with userinfo and businesses -->
 
       <div class="col-md-6">
         <div id="map-container">
@@ -97,4 +108,23 @@
     </div> <!-- closes row -->
 </div>
 
+<script>
+// when you click on an image, add to data base and fill opacity!
+$('.icons img').on("click", function(evt) {
+    $(this).attr("class", "selected iconsize");
+    
+    var businessId = $(this).closest(".business").attr("id");
+
+    var attrName = $(this).attr("id");
+
+    console.log(businessId)
+    console.log(attrName)
+
+    $.post('/saveattr', {"attrName": attrName,
+                         "businessId": businessId});
+    // taking the attribute name and business id for where the click was
+    // sending it to the route '/saveattr'
+});
+
+</script>
 {% endblock %}

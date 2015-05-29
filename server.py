@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
 from script import query_api
-from model import Business, User, UserBusinessLink, connect_to_db, db
+from model import Business, User, UserBusinessAttr, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -147,8 +147,8 @@ def logout():
 
 
 @app.route('/saving', methods=['POST'])
-def save_info():
-    """when the user is logged in, they save the business info to db"""
+def save_businessinfo():
+    """when the user is logged in, they save the business info to db when click button"""
 
     yelp_id = request.form.get('yelpId')
     name = request.form.get('name')
@@ -183,7 +183,7 @@ def save_info():
     # pulling out name from the new_business added above, setting to var business_name
         business_id = new_business.business_id
     # addding to association table
-        new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
+        new_association = UserBusinessAttr(user_id=user_id, business_id=business_id)
 
         db.session.add(new_association)
         db.session.commit()
@@ -193,11 +193,11 @@ def save_info():
         b = Business.query.filter_by(yelp_id=yelp_id).first()
         business_id = b.business_id
 
-        q = UserBusinessLink.query.filter_by(user_id=user_id, business_id=business_id).first()
+        q = UserBusinessAttr.query.filter_by(user_id=user_id, business_id=business_id).first()
         if not q:
             # if the association doesn exist
             business_id = b.business_id
-            new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
+            new_association = UserBusinessAttr(user_id=user_id, business_id=business_id)
 
             db.session.add(new_association)
             db.session.commit()
@@ -220,6 +220,19 @@ def display_user_profile():
     print businesses
 
     return render_template("profile.html", user=user, businesses=businesses)
+
+
+@app.route('/saveattr', methods=["POST"])
+def save_attr_assoc():
+    """A user can click on attr icon next to a saved business.
+    add association to database"""
+
+    attr_name = request.form.get("attrName")
+    business_id = request.form.get("businessId")
+    print attr_name
+    print business_id
+
+    return "saving to database!"
 
 
 @app.route('/resources')
