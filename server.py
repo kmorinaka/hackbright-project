@@ -208,13 +208,14 @@ def display_user_profile():
     """Display the user's info and the info of businesses they saved"""
     # pulls the username for user that is logged in
     user_id = session['user_id']
-    print user_id  # correct!
+
     # querying the db base on username
     user = User.query.get(user_id)
 
     # user.businesses is a list of objects.
     # prints like -> [<Business name=bi-rite-creamer-san-francisco>] bc __repr__
     businesses = user.businesses
+    print businesses
 
     return render_template("profile.html", user=user, businesses=businesses)
 

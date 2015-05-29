@@ -20,7 +20,7 @@
  <script>   
     
     function initialize() {
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions)
         var businesses = {{ businesses|tojson|safe }}
 
         var mapOptions = {
@@ -124,7 +124,7 @@
                       <br><br>
                 </ul>
           </div>
-          <div class="col-md-6">
+        <div class="col-md-6">
             <div id="map-container">
               <div id="map"></div>
             </div>
