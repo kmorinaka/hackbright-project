@@ -16,6 +16,7 @@ class Business(db.Model):
     state = db.Column(db.String(2), nullable=True)  # state code
     zipcode = db.Column(db.String(5), nullable=True)
     phone = db.Column(db.String(60), nullable=True)  # better consistent format?
+    # categories = db.Column(db.String(60), nullable=True)
     neighborhoods = db.Column(db.String(60), nullable=True)
     cross_streets = db.Column(db.String(60), nullable=True)
     yelp_url = db.Column(db.String(100), nullable=True)
@@ -25,6 +26,7 @@ class Business(db.Model):
     # define relationship to users table- only need to do in one class
     # params for relationship(class name, table name, name to call class Business/table businesses
     users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
+    attributes = db.relationship("Attribute", secondary='users_businesses')
 
     def __repr__(self):
         """provides helpful representation when printed"""
@@ -51,6 +53,15 @@ class User(db.Model):
         return "<User name=%s>" % (self.username)
 
 
+class Attribute(db.Model):
+    """Images that represent attributes a user can give a business"""
+
+    __tablename__ = "attributes"
+
+    attr_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(20), nullable=True)
+
+
 class UserBusinessLink(db.Model):
     """Association table of users and the businesses they save to their account"""
 
@@ -61,6 +72,8 @@ class UserBusinessLink(db.Model):
                         db.ForeignKey('users.user_id'))
     business_id = db.Column(db.Integer,
                             db.ForeignKey('businesses.business_id'))
+    attr_id = db.Column(db.Integer,
+                        db.ForeignKey('attributes.attr_id'))
 
 
 def connect_to_db(app):

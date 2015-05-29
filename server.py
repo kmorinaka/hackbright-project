@@ -157,6 +157,7 @@ def save_info():
     state = request.form.get('state')
     zipcode = request.form.get('zipcode')
     phone = request.form.get('phone')
+    # categories = " ".join(request.form.get('categories'))
     neighborhoods = request.form.get('neighborhoods')
     cross_streets = request.form.get('crossStreets')
     yelp_url = request.form.get('yelpUrl')
@@ -173,8 +174,9 @@ def save_info():
     # if NOT in database, add to database AND association table
         new_business = Business(yelp_id=yelp_id, name=name, address=address,
                                 city=city, state=state, zipcode=zipcode, phone=phone,
-                                neighborhoods=neighborhoods, cross_streets=cross_streets,
-                                yelp_url=yelp_url, latitude=latitude, longitude=longitude)
+                                neighborhoods=neighborhoods,
+                                cross_streets=cross_streets, yelp_url=yelp_url, latitude=latitude,
+                                longitude=longitude)
         print new_business
         db.session.add(new_business)
         db.session.commit()

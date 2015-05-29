@@ -66,10 +66,23 @@
         <div class="businesses">
             <h4><u>Your Saved Businesses:</u></h4>
             {% for business in businesses %}
-              <ul>
-                <p><b>{{ business.name }}</b></p>
-                <li>{{ business.address }} {{ business.city }}, {{ business.state}}</li>
-              </ul>  
+                <ul>
+                    <p><b>{{ business.name }}</b><img src="/static/friendly.pgn" /></p>
+                    <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
+
+                {% if business.phone %}
+                    <li>Phone number: {{ business.phone }}</li>
+                {% else %}
+                    <li>Phone number: N/A</li>
+                {% endif %}
+                        
+                {% if business.cross_streets %}
+                    <li>Cross streets: {{ business.cross_streets }}</li>
+                {% else %}
+                    <li>Cross streets: N/A</li>
+                {% endif %}
+                  
+                </ul>  
             {% endfor %}
         </div>
 
