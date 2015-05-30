@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 
 from script import query_api
-from model import Business, User, UserBusinessAttr, connect_to_db, db
+from model import Business, User, UserBusinessLink, AttrAssoc, connect_to_db, db
 
 app = Flask(__name__)
 
@@ -183,7 +183,7 @@ def save_businessinfo():
     # pulling out name from the new_business added above, setting to var business_name
         business_id = new_business.business_id
     # addding to association table
-        new_association = UserBusinessAttr(user_id=user_id, business_id=business_id)
+        new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
 
         db.session.add(new_association)
         db.session.commit()
@@ -193,11 +193,11 @@ def save_businessinfo():
         b = Business.query.filter_by(yelp_id=yelp_id).first()
         business_id = b.business_id
 
-        q = UserBusinessAttr.query.filter_by(user_id=user_id, business_id=business_id).first()
+        q = UserBusinessLink.query.filter_by(user_id=user_id, business_id=business_id).first()
         if not q:
             # if the association doesn exist
             business_id = b.business_id
-            new_association = UserBusinessAttr(user_id=user_id, business_id=business_id)
+            new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
 
             db.session.add(new_association)
             db.session.commit()
@@ -217,7 +217,6 @@ def display_user_profile():
     # user.businesses is a list of objects.
     # prints like -> [<Business name=bi-rite-creamer-san-francisco>] bc __repr__
     businesses = user.businesses
-    print businesses
 
     return render_template("profile.html", user=user, businesses=businesses)
 
@@ -229,10 +228,45 @@ def save_attr_assoc():
 
     attr_name = request.form.get("attrName")
     business_id = request.form.get("businessId")
-    print attr_name
-    print business_id
 
-    return "saving to database!"
+    user_id = session['user_id']
+
+    # given user_id and business_id, query where the user/business association matches in db
+    q = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
+                                      UserBusinessLink.business_id == business_id).first()
+
+    # q is the match of that u/b assoc, get the id
+    user_business_id = q.user_business_id
+    # add new_attr_assoc to  AttrAssoc table!
+    new_attr_assoc = AttrAssoc(user_business_id=user_business_id, name=attr_name)
+
+    db.session.add(new_attr_assoc)
+    db.session.commit()
+
+    return "will save"
+
+
+@app.route('/deleteattr', methods=['POST'])
+def delete_attr_assoc():
+    """When a user unclicks an attr icon, it goes opaque and removes from database"""
+
+    attr_name = request.form.get("attrName")
+    business_id = request.form.get("businessId")
+
+    user_id = session['user_id']
+    # given business_id/user_id query UserBusiness to get the object
+    user_business_obj = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
+                                                      UserBusinessLink.business_id == business_id).first()
+    # get the id of the object
+    user_business_id = user_business_obj.user_business_id
+
+    obj_to_remove = AttrAssoc.query.filter(AttrAssoc.name == attr_name,
+                                           AttrAssoc.user_business_id == user_business_id).first()
+
+    db.session.delete(obj_to_remove)
+    db.session.commit()
+
+    return "removing attr assoc"
 
 
 @app.route('/resources')

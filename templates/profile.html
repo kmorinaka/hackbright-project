@@ -109,22 +109,32 @@
 </div>
 
 <script>
-// when you click on an image, add to data base and fill opacity!
+// when you click on an image that is unselected, fill opacity!
 $('.icons img').on("click", function(evt) {
-    $(this).attr("class", "selected iconsize");
-    
-    var businessId = $(this).closest(".business").attr("id");
+    if ($(this).attr("class") === "unselected iconsize") {
+        $(this).attr("class", "selected iconsize");
+        
+        // take the attribute name and business id for where the click was
+        var businessId = $(this).closest(".business").attr("id");
+        var attrName = $(this).attr("id");
+        
+        // send the variables to the route '/saveattr' (will save to db in route)
+        $.post('/saveattr', {"attrName": attrName,
+                             "businessId": businessId});
+   // when you click on an image that is selected, lower opacity
+    } else {
+        $(this).attr("class", "unselected iconsize");
+        
+        // take the attribute name and business id for where the click was
+        var businessId = $(this).closest(".business").attr("id");
+        var attrName = $(this).attr("id");
 
-    var attrName = $(this).attr("id");
-
-    console.log(businessId)
-    console.log(attrName)
-
-    $.post('/saveattr', {"attrName": attrName,
-                         "businessId": businessId});
-    // taking the attribute name and business id for where the click was
-    // sending it to the route '/saveattr'
+        // send the variables to the route '/saveattr' (to remove from db)
+        $.post('/deleteattr', {"attrName": attrName,
+                               "businessId": businessId});
+    };
 });
+
 
 </script>
 {% endblock %}

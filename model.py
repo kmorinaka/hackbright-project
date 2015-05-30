@@ -26,7 +26,6 @@ class Business(db.Model):
     # define relationship to users table- only need to do in one class
     # params for relationship(class name, table name, name to call class Business/table businesses
     users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
-    attributes = db.relationship("UserBusinessAttr", backref=db.backref("businesses"))
 
     def __repr__(self):
         """provides helpful representation when printed"""
@@ -61,18 +60,25 @@ class Attribute(db.Model):
     name = db.Column(db.String(20), primary_key=True)
 
 
-class UserBusinessAttr(db.Model):
+class UserBusinessLink(db.Model):
     """Association table of users and the businesses they save to their account"""
 
     __tablename__ = 'users_businesses'
 
     user_business_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'))
-    business_id = db.Column(db.Integer,
-                            db.ForeignKey('businesses.business_id'))
-    name = db.Column(db.String(20),
-                     db.ForeignKey('attributes.name'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    business_id = db.Column(db.Integer, db.ForeignKey('businesses.business_id'))
+    attributes = db.relationship("Attribute", secondary='attr_assocs', backref=db.backref('users_businesses'))
+
+
+class AttrAssoc(db.Model):
+    """Adds the attribute to user/business association"""
+
+    __tablename__ = 'attr_assocs'
+
+    attr_assoc_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_business_id = db.Column(db.Integer, db.ForeignKey('users_businesses.user_business_id'))
+    name = db.Column(db.String(20), db.ForeignKey('attributes.name'))
 
 
 def connect_to_db(app):
