@@ -189,14 +189,13 @@ def save_businessinfo():
         db.session.commit()
     else:
     # if IN database, add ONLY to association table
-    # getting the business by querying by
-        b = Business.query.filter_by(yelp_id=yelp_id).first()
-        business_id = b.business_id
-
+    # getting the business object by querying by yelp_id, then get the business_id
+        b_obj = Business.query.filter_by(yelp_id=yelp_id).first()
+        business_id = b_obj.business_id
+        # given the business_id and user_id, query to find user/business assoc obj
         q = UserBusinessLink.query.filter_by(user_id=user_id, business_id=business_id).first()
         if not q:
-            # if the association doesn exist
-            business_id = b.business_id
+            business_id = b_obj.business_id
             new_association = UserBusinessLink(user_id=user_id, business_id=business_id)
 
             db.session.add(new_association)
@@ -211,11 +210,10 @@ def display_user_profile():
     # pulls the username for user that is logged in
     user_id = session['user_id']
 
-    # querying the db base on username
+    # querying the db base with user_id in session
     user = User.query.get(user_id)
 
     # user.businesses is a list of objects.
-    # prints like -> [<Business name=bi-rite-creamer-san-francisco>] bc __repr__
     businesses = user.businesses
 
     return render_template("profile.html", user=user, businesses=businesses)
@@ -254,19 +252,38 @@ def delete_attr_assoc():
     business_id = request.form.get("businessId")
 
     user_id = session['user_id']
-    # given business_id/user_id query UserBusiness to get the object
+    # given business_id/user_id, query UserBusiness to get the object
     user_business_obj = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
                                                       UserBusinessLink.business_id == business_id).first()
-    # get the id of the object
+    # get the id of the UserBusiness object
     user_business_id = user_business_obj.user_business_id
-
+    # given user_business_id, query AttrAssoc to get object
     obj_to_remove = AttrAssoc.query.filter(AttrAssoc.name == attr_name,
                                            AttrAssoc.user_business_id == user_business_id).first()
-
     db.session.delete(obj_to_remove)
     db.session.commit()
 
     return "removing attr assoc"
+
+
+@app.route('/savedinfo')
+def show_saved_attrs():
+
+    user_id = session['user_id']
+    # get user object
+    user = User.query.get(user_id)
+    # get businesses the user saved
+    list_business_objs = user.businesses
+    """LEFT OFF HERE"""
+    # for obj in list_business_objs:
+    #     list_biz_ids = [obj.name for obj in list_business_objs]
+    #     print list_biz_ids
+    #     for id in list_biz_ids:
+    #         user_biz_objs = UserBusinessLink.query.filter_by(business_id=id).all()
+    #     print user_biz_objs
+    #     print "name: %s, id: %s" % (obj.name, obj.business_id)
+
+    return "saved info"
 
 
 @app.route('/resources')
