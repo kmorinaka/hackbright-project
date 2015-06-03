@@ -1,6 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}Details{% endblock %}
+{% block head %}
+<title>{{ name }} Details</title>
+
+<script src="/instagram/jquery.js"></script>
+    <script src="/instagram/dist/instagram.min.js"></script>
+    <script>
+    jQuery(function($) {
+      $('.instagram').on('willLoadInstagram', function(event, options) {
+        console.log(options);
+      });
+      $('.instagram').on('didLoadInstagram', function(event, response) {
+        console.log(response);
+      });
+      $('.instagram').instagram({
+        hash: 'love',
+        clientId: '6e3292cce1ef460c95eb4d484a04ae16'
+      });
+    });
+    </script>
+{% endblock %}
+
 
 {% block content %}
  
@@ -45,8 +65,9 @@
             <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
           {% endif %}
         </div>
-   
+    <div class="instagram"></div>
 
+   
 
     </div>
 </div>
@@ -63,4 +84,6 @@
 
        });
 </script>
+ 
+
 {% endblock %}

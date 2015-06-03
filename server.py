@@ -20,6 +20,7 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage"""
 
+
     return render_template('homepage.html')
 
 
@@ -272,16 +273,30 @@ def show_saved_attrs():
     user_id = session['user_id']
     # get user object
     user = User.query.get(user_id)
-    # get businesses the user saved
-    list_business_objs = user.businesses
-    """LEFT OFF HERE"""
-    # for obj in list_business_objs:
-    #     list_biz_ids = [obj.name for obj in list_business_objs]
-    #     print list_biz_ids
-    #     for id in list_biz_ids:
-    #         user_biz_objs = UserBusinessLink.query.filter_by(business_id=id).all()
-    #     print user_biz_objs
-    #     print "name: %s, id: %s" % (obj.name, obj.business_id)
+    # querying to get user_business_ids
+    list_user_business_objs = UserBusinessLink.query.filter_by(user_id=user_id).all()
+
+    # dictionary to store business name with attribute name
+    attr_dict = {}
+    # user_business_id, user_id, business_id
+    for user_business_obj in list_user_business_objs:
+        user_business_id = user_business_obj.user_business_id  # get id
+        print "user business id: %s" % (user_business_id)
+        business_id = user_business_obj.business_id
+        # use business_id to query to get name
+        business = Business.query.get(business_id)
+        business_name = business.name
+        print "business name: %s" % (business_name)
+        # query by each id
+        list_attr_assocs = AttrAssoc.query.filter_by(user_business_id=user_business_id).all()
+        # check to see if id exists in attr table
+        if list_attr_assocs:
+            for attr_assoc in list_attr_assocs:
+                if business_name in attr_dict:
+                    attr_dict[business_name].append(attr_assoc.name)
+                else:
+                    attr_dict[business_name] = [attr_assoc.name]
+    print attr_dict
 
     return "saved info"
 
