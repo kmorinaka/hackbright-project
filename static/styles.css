@@ -1,0 +1,16 @@
+.home-container {
+    background-image: linear-gradient(#222, #333);
+    color: white;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    margin-bottom: 25px;
+}
+
+.home-container h1 {
+    font-size: 100px;
+    font-weight: bold;
+}
+
+.home-container .btn {
+    margin-top: 25px; 
+}
