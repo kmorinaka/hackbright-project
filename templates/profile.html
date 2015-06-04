@@ -10,9 +10,9 @@
         #map, #map-container {height: 600px; margin: 0px;}
         #map-container {padding-top: 50px;}
         .iconsize {height: 24px; width: 24px;}
-        .unselected{opacity: 0.4;}
+        .unselected{-webkit-filter: grayscale(100%); opacity: 0.7; }
         #cashicon {height: 30px; width: 30px;}
-        .selected {opacity: 100;}
+        .selected {opacity: 1; -webkit-filter: grayscale(0%);}
 </style>
 
     <script src="https://maps.googleapis.com/maps/api/js"></script>
@@ -73,12 +73,12 @@
 
                     <p class="icons"><b>{{ business.name }}</b>
                         <!-- if the img id exists in database, class="selected icon" -->
-                        <img id="goodfood" class="unselected iconsize" src="/static/goodfood.png" />
-                        <img id="clean" class="unselected iconsize" src="/static/clean.png" />
-                        <img id="ecofriendly" class="unselected iconsize" src="/static/ecofriendly.png" />
-                        <img id="friendly" class="unselected iconsize" src="/static/friendly.png" />
-                        <img id="wifi" class="unselected iconsize" src="/static/wifi.png" />
-                        <img id="cashicon" class="unselected iconsize" src="/static/cashonly.png" /></p>
+                        <img class="goodfood unselected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                        <img class="clean unselected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                        <img class="ecofriendly unselected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                        <img class="friendly unselected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                        <img class="wifi unselected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                        <img class="cashicon unselected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/></p>
                     <ul>
                         <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
 
@@ -112,29 +112,28 @@
 
 <script>
 // when you click on an image that is unselected, fill opacity!
-$('.icons img').on("click", function(evt) {
-    if ($(this).attr("class") === "unselected iconsize") {
-        $(this).attr("class", "selected iconsize");
+$('.icons').on("click", ".unselected", function(evt) {
+        $(this).addClass('selected').removeClass('unselected');
         
         // take the attribute name and business id for where the click was
         var businessId = $(this).closest(".business").attr("id");
-        var attrName = $(this).attr("id");
+        var attrName = $(this).data('attr');
         
         // send the variables to the route '/saveattr' (will save to db in route)
         $.post('/saveattr', {"attrName": attrName,
                              "businessId": businessId});
    // when you click on an image that is selected, lower opacity
-    } else {
-        $(this).attr("class", "unselected iconsize");
+}).on("click", ".selected", function(evt) {
+    console.log('click selected');
+        $(this).addClass('unselected').removeClass('selected');
         
         // take the attribute name and business id for where the click was
         var businessId = $(this).closest(".business").attr("id");
-        var attrName = $(this).attr("id");
+        var attrName = $(this).data("attr");
 
         // send the variables to the route '/saveattr' (to remove from db)
         $.post('/deleteattr', {"attrName": attrName,
                                "businessId": businessId});
-    };
 });
 
 

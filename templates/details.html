@@ -2,23 +2,65 @@
 
 {% block head %}
 <title>{{ name }} Details</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-instagram/0.3.1/instagram.min.js"></script>
 
-<script src="/instagram/jquery.js"></script>
-    <script src="/instagram/dist/instagram.min.js"></script>
     <script>
-    jQuery(function($) {
+
+    function createPhotoElement(photo) {
+      var innerHtml = $('<img>')
+        .addClass('instagram-image')
+        .attr('src', photo.images.thumbnail.url);
+
+      innerHtml = $('<a>')
+        .attr('target', '_blank')
+        .attr('href', photo.link)
+        .append(innerHtml);
+
+      return $('<div>')
+        .addClass('instagram-placeholder')
+        .attr('id', photo.id)
+        .append(innerHtml);
+    }
+
+    function didLoadInstagram(event, response) {
+      var that = this;
+
+      $.each(response.data, function(i, photo) {
+        $(that).append(createPhotoElement(photo));
+      });
+    }
+
+
+    $(function() {
       $('.instagram').on('willLoadInstagram', function(event, options) {
         console.log(options);
       });
-      $('.instagram').on('didLoadInstagram', function(event, response) {
-        console.log(response);
-      });
+
+
+      $('.instagram').on('didLoadInstagram', didLoadInstagram);
       $('.instagram').instagram({
-        hash: 'love',
-        clientId: '6e3292cce1ef460c95eb4d484a04ae16'
+        search: {
+          lat: '{{ latitude }}',
+          lng: '{{ longitude }}',
+          distance: '10'
+        },
+        clientId: '{{ CLIENT_ID }}',
       });
     });
     </script>
+    <script>
+    
+
+    /*var instUrl = 'https://api.instagram.com/v1/locations/search?lat={{ latitude }}&lng={{ longitude }}&client_id={{ CLIENT_ID }}/';
+
+        $.get(instUrl, renderInstagram)
+
+        function renderInstagram (data) {
+            console.log(data);
+        }*/
+
+    </script>
+
 {% endblock %}
 
 
@@ -65,7 +107,9 @@
             <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
           {% endif %}
         </div>
-    <div class="instagram"></div>
+    <div id="instafeed"></div>
+    <div class="instagram">
+    </div>
 
    
 

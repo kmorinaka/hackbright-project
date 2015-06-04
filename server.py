@@ -1,7 +1,9 @@
-from jinja2 import StrictUndefined
+import os
 
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
+
+from jinja2 import StrictUndefined
 
 from script import query_api
 from model import Business, User, UserBusinessLink, AttrAssoc, connect_to_db, db
@@ -14,12 +16,13 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 #normally, if you use an undefinted variable in jinja2, it fails silently.
 #instead, it will raise an error
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET = os.environ['CLIENT_SECRET']
 
 
 @app.route('/')
 def index():
     """Homepage"""
-
 
     return render_template('homepage.html')
 
@@ -68,7 +71,7 @@ def display_business_info():
                            state=state, zipcode=zipcode, phone=phone, neighborhoods=neighborhoods,
                            cross_streets=cross_streets, categories=categories, yelp_url=yelp_url,
                            rating_stars=rating_stars, yelp_id=yelp_id, latitude=latitude,
-                           longitude=longitude)
+                           longitude=longitude, CLIENT_SECRET=CLIENT_SECRET, CLIENT_ID=CLIENT_ID)
 
 
 @app.route('/register', methods=['GET'])

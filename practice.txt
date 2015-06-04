@@ -3,6 +3,27 @@ onclick="if(submitted)this.disabled = true"
 
 query_api('grocery', 'san francisco, ca')
 
+Another way to serialize data to send to route instead of 
+<form method="GET" action="/details">
+                    <input class="btn btn-link" type="submit" value="{{ business['name'] }}"/>
+                    <input type="hidden" name="name" value="{{ business['name'] }}"/>
+                    <input type="hidden" name="address" value="{{ business['address'] }}"/>
+                    <input type="hidden" name="city" value="{{ business['city'] }}"/>
+                    <input type="hidden" name="state" value="{{ business['state'] }}"/>
+                    <input type="hidden" name="zipcode" value="{{ business['zipcode'] }}"/>
+                    <input type="hidden" name="phone" value="{{ business['phone'] }}"/>
+                    <input type="hidden" name="categories" value="{{ business['categories'] }}"/>
+                    <input type="hidden" name="yelp-id" value="{{ business['id'] }}"/>
+                    <input type="hidden" name="yelp-url" value="{{ business['yelp_url'] }}"/>
+                    <input type="hidden" name="rating" value="{{ business['rating'] }}"/>
+                    <input type="hidden" name="url-rating-stars" value="{{ business['url_rating_stars'] }}"/>
+                    <input type="hidden" name="neighborhoods" value="{{ business['neighborhoods'] }}"/>
+                    <input type="hidden" name="cross-streets" value="{{ business['cross_streets'] }}"/>
+                    <input type="hidden" name="latitude" value="{{ business['latitude'] }}"/>
+                    <input type="hidden" name="longitude" value="{{ business['longitude'] }}"/>
+                  </form>       
+
+
 When this was in my app route, it only displayed info for one business result 
 
 PYTHON
