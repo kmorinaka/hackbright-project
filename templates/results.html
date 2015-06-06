@@ -10,7 +10,6 @@
         #map, #map-container {height: 600px; margin: 0px;}
         #map-container {padding-top: 50px;}
 
-        
     </style>
 
     <script src="https://maps.googleapis.com/maps/api/js"></script>
@@ -48,29 +47,13 @@
     };
 
     google.maps.event.addDomListener(window, 'load', initialize);
-
-// for business in businesses:
-// get the attribute data-coordinates (on the <a>)
-
-
-    // function createMarker(business, point) {
-    //     var latLng = new google.maps.latLng(coordinates) //fill in lat/lon from search results
-    //     var marker = new google.maps.Marker({
-    //         position: latLng,
-    //         map: map,
-    //         title: '',
-    //         icon: //optional, deal with later
-    //     })
-    // }
-    
-
 </script>
 {% endblock %}
 
 
 {% block content %}
-    <div class="container-fluid">
-        <form id="search" method="GET" action="/searchresults">
+<div class="container-fluid">
+    <form id="search" method="GET" action="/searchresults">
         <label>I'm looking for:
             <input type="text" name="term">
         </label>
@@ -78,63 +61,44 @@
         <label>Location:
             <input type="text" name="location">
         </label>
-            <input type="submit" value="Search">
-            <!--change value to text i want on button-->
+        <input type="submit" value="Search">
+        <!--change value to text i want on button-->
     </form>
-      <div class="row">
+    <div class="row">
         <div class="col-md-6">
-              <h1>Results:</h1>
-              <br>
-              <p>Your search for {{ term }} returned {{ num_res }} results in {{ location }}</p>
-                <ul>
-                  {% for business in businesses %}
-                            
-                  <a href='/details' class="savedata "data-name="{{ business['name'] }}"
-                        data-address="{{ business['address'] }}"
-                        data-city="{{ business['city'] }}"
-                        data-state="{{ business['state'] }}"
-                        data-zipcode="{{ business['zipcode'] }}"
-                        data-phone="{{ business['phone'] }}"
-                        data-categories="{{ business['categories'] }}"
-                        data-yelp-id="{{ business['id'] }}"
-                        data-yelp-url="{{ business['yelp_url'] }}"
-                        data-rating="{{ business['rating'] }}"
-                        data-url-rating-stars="{{ business['url_rating_stars'] }}"
-                        data-neighborhoods="{{ business['neighborhoods'] }}"
-                        data-cross-streets="{{ business['cross_streets'] }}"
-                        data-latitude="{{ business['latitude'] }}"
-                        data-longitude="{{ business['longitude'] }}">
-                        {{ business['name'] }}</a> 
-                        
-                          <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
-                      
-                      {% if business['phone'] %}
-                          <li>Phone number: {{ business['phone'] }}</li>
-                      {% else %}
-                          <li>Phone number: N/A</li>
-                      {% endif %}
-                        
-                      {% if business['categories'] %}
-                          <li>Categories: {{ business['categories'] }}</li>
-                      {% else %}
-                          <li>Categories: N/A</li>
-                      {% endif %}
+            <h1>Results:</h1>
+            <br>
+            <p>Your search for {{ term }} returned {{ num_res }} results in {{ location }}</p>
+            <ul>
+                {% for business in businesses %}
 
-                  {% endfor %}
-                      <br><br>
-                </ul>
-          </div>
+                <a href='/details' class="savedata " data-name="{{ business['name'] }}" data-address="{{ business['address'] }}" data-city="{{ business['city'] }}" data-state="{{ business['state'] }}" data-zipcode="{{ business['zipcode'] }}" data-phone="{{ business['phone'] }}" data-categories="{{ business['categories'] }}" data-yelp-id="{{ business['id'] }}" data-yelp-url="{{ business['yelp_url'] }}" data-rating="{{ business['rating'] }}" data-url-rating-stars="{{ business['url_rating_stars'] }}" data-neighborhoods="{{ business['neighborhoods'] }}" data-cross-streets="{{ business['cross_streets'] }}" data-latitude="{{ business['latitude'] }}" data-longitude="{{ business['longitude'] }}">
+                        {{ business['name'] }}</a>
+
+                <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
+
+                {% if business['phone'] %}
+                <li>Phone number: {{ business['phone'] }}</li>
+                {% else %}
+                <li>Phone number: N/A</li>
+                {% endif %} {% if business['categories'] %}
+                <li>Categories: {{ business['categories'] }}</li>
+                {% else %}
+                <li>Categories: N/A</li>
+                {% endif %} {% endfor %}
+                <br>
+                <br>
+            </ul>
+        </div>
         <div class="col-md-6">
             <div id="map-container">
-              <div id="map"></div>
+                <div id="map"></div>
             </div>
         </div>
-      </div> <!-- closes the row -->
-        
     </div>
-    
-    
-    <script> 
+</div>
+
+<script>
     //make url safe version of all data attributes  ?address=45Miss&city=
         // use window.href to send a get request with all data attributes in the 
 

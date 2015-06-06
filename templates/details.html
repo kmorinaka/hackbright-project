@@ -48,71 +48,46 @@
       });
     });
     </script>
-    <script>
-    
-
-    /*var instUrl = 'https://api.instagram.com/v1/locations/search?lat={{ latitude }}&lng={{ longitude }}&client_id={{ CLIENT_ID }}/';
-
-        $.get(instUrl, renderInstagram)
-
-        function renderInstagram (data) {
-            console.log(data);
-        }*/
-
-    </script>
+  
 
 {% endblock %}
 
 
 {% block content %}
- 
 <div>
     <div>
-           
-              
         <div class="container-fluid">
-          {% if "user_id" in session %}
-          <!-- if the user is logged in, button exists -->
+            {% if "user_id" in session %}
+            <!-- if the user is logged in, button exists -->
             <h3><b>{{ name }}</b></h3>
-            <button class="save" type="button"  
-                data-yelp-id="{{ yelp_id }}"
-                data-name="{{ name }}"
-                data-address="{{ address }}"
-                data-city="{{ city }}"
-                data-state="{{ state }}"
-                data-zipcode="{{ zipcode }}"
-                data-phone="{{ phone }}"
-                data-neighborhoods="{{ neighborhoods }}"
-                data-cross-streets="{{ cross_streets }}"
-                data-yelp-url="{{ yelp_url }}"
-                data-latitude="{{ latitude }}"
-                data-longitude ="{{ longitude }}">Save</button>
+            <button class="save" type="button" data-yelp-id="{{ yelp_id }}" data-name="{{ name }}" data-address="{{ address }}" data-city="{{ city }}" data-state="{{ state }}" data-zipcode="{{ zipcode }}" data-phone="{{ phone }}" data-neighborhoods="{{ neighborhoods }}" data-cross-streets="{{ cross_streets }}" data-yelp-url="{{ yelp_url }}" data-latitude="{{ latitude }}" data-longitude="{{ longitude }}">Save</button>
             <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
             <p>Phone number: {{ phone }}</p>
             <p>Neighborhoods: {{ neighborhoods }}</p>
             <p>Cross streets: {{ cross_streets }}</p>
             <p>Categories: {{ categories }}</p>
-            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
-            <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
-                
-          {% else %}
-          <!-- else, no button -->
-            <h3><b>{{ name }}</b></h3>    
+            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a>
+            </p>
+            <p>Yelp rating: <img src="{{ rating_stars }}" />
+            </p>
+
+            {% else %}
+            <!-- else, no button -->
+            <h3><b>{{ name }}</b></h3>
             <p>Address: {{ address }} {{ city }}, {{ state }} {{ zipcode }}</p>
             <p>Phone number: {{ phone }}</p>
             <p>Neighborhoods: {{ neighborhoods }}</p>
             <p>Cross streets: {{ cross_streets }}</p>
             <p>Categories: {{ categories }}</p>
-            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a></p>
-            <p>Yelp rating: <img src="{{ rating_stars }}" /></p>
-          {% endif %}
+            <p>Link to: <a href="{{ yelp_url }}">Go to Yelp page!</a>
+            </p>
+            <p>Yelp rating: <img src="{{ rating_stars }}" />
+            </p>
+            {% endif %}
         </div>
-    <div id="instafeed"></div>
-    <div class="instagram">
-    </div>
-
-   
-
+        <div id="instafeed"></div>
+        <div class="instagram">
+        </div>
     </div>
 </div>
 <script>
@@ -128,6 +103,6 @@
 
        });
 </script>
- 
 
+ 
 {% endblock %}

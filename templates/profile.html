@@ -11,7 +11,7 @@
         #map-container {padding-top: 50px;}
         .iconsize {height: 24px; width: 24px;}
         .unselected{-webkit-filter: grayscale(100%); opacity: 0.7; }
-        #cashicon {height: 30px; width: 30px;}
+        .cashicon {height: 30px; width: 30px;}
         .selected {opacity: 1; -webkit-filter: grayscale(0%);}
 </style>
 
@@ -23,6 +23,11 @@
  function initialize() {
 
         var map = new google.maps.Map(document.getElementById('map'), mapOptions)
+        // account for if no businesses exist, create a default ceter lat/lng
+        // if {{ businesses[0] }}    
+        //     var center = new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
+
+        //     var defaultCenter = new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
 
         var mapOptions = {
               zoom: 12,
@@ -32,9 +37,10 @@
         map = new google.maps.Map(
             document.getElementById('map'),
             mapOptions);
-
-        console.log('hello'); //debugging
-     
+        
+        // debugging
+        console.log('hello'); 
+        
         {% for business in businesses %}
 
             var myLatLng = new google.maps.LatLng({{ business.latitude }}, {{ business.longitude }});
@@ -58,46 +64,79 @@
 {% block content %}
 <div class="container-fluid"> 
     <div class="row">
-      <div class="col-md-6">    
-        <div class="userinfo">
-            <a href="/savedinfo">check database</a>
-            <h3><b>{{ user.username }}</b></h3>
-            <p>You live in: {{ user.city }}, {{ user.state }}</p>
-            <p>Email: {{ user.email }}</p>
-        </div>
-        <br><br>
-        <div>
-            <h4><u>Your Saved Businesses:</u></h4>
-            {% for business in businesses %}
-                <div class="business" id="{{ business.business_id }}">
+        <div class="col-md-6">    
+            <div class="userinfo">
+                
+                <h3><b>{{ user.username }}</b></h3>
+                <p>You live in: {{ user.city }}, {{ user.state }}</p>
+                <p>Email: {{ user.email }}</p>
+            </div>
+      
+            <div>
+                <h4><u>Your Saved Businesses:</u></h4>
+                {% for business in businesses %}
+                    <div class="business" id="{{ business.business_id }}">
+                        <span class="icons"><p><b>{{ business.name }}</b></p>
 
-                    <p class="icons"><b>{{ business.name }}</b>
-                        <!-- if the img id exists in database, class="selected icon" -->
-                        <img class="goodfood unselected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
-                        <img class="clean unselected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
-                        <img class="ecofriendly unselected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
-                        <img class="friendly unselected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
-                        <img class="wifi unselected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
-                        <img class="cashicon unselected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/></p>
-                    <ul>
-                        <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
+                            {% if 'goodfood' in attr_dict[business.name] %}
+                            <img class="goodfood selected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                            {% else %}
+                            <img class="goodfood unselected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                            {% endif %}
 
-                    {% if business.phone %}
-                        <li>Phone number: {{ business.phone }}</li>
-                    {% else %}
-                        <li>Phone number: N/A</li>
-                    {% endif %}
-                            
-                    {% if business.cross_streets %}
-                        <li>Cross streets: {{ business.cross_streets }}</li>
-                    {% else %}
-                        <li>Cross streets: N/A</li>
-                    {% endif %}
-                      
-                    </ul>
-                </div>      
-            {% endfor %}
-        </div>
+                           {% if 'clean' in attr_dict[business.name] %}
+                            <img class="clean selected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                            {% else %}
+                            <img class="clean unselected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                            {% endif %}
+
+                            {% if 'ecofriendly' in attr_dict[business.name] %}
+                            <img class="ecofriendly selected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                            {% else %}
+                            <img class="ecofriendly unselected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                            {% endif %}
+
+                            {% if 'friendly' in attr_dict[business.name] %}
+                            <img class="friendly selected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                            {% else %}
+                            <img class="friendly unselected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                            {% endif %}
+
+                            {% if 'wifi' in attr_dict[business.name] %}
+                            <img class="wifi selected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                            {% else %}
+                            <img class="wifi unselected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                            {% endif %}
+
+                            {% if 'cashonly' in attr_dict[business.name] %}
+                            <img class="cashicon selected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
+                            {% else %}
+                            <img class="cashicon unselected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
+                            {% endif %}
+
+                        </span>
+
+                           
+
+                        <ul>
+                            <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
+
+                        {% if business.phone %}
+                            <li>Phone number: {{ business.phone }}</li>
+                        {% else %}
+                            <li>Phone number: N/A</li>
+                        {% endif %}
+                                
+                        {% if business.cross_streets %}
+                            <li>Cross streets: {{ business.cross_streets }}</li>
+                        {% else %}
+                            <li>Cross streets: N/A</li>
+                        {% endif %}
+                          
+                        </ul>
+                    </div>      
+                {% endfor %}
+            </div>
 
 
       </div> <!-- closes left column with userinfo and businesses -->
@@ -111,9 +150,12 @@
 </div>
 
 <script>
+
+
 // when you click on an image that is unselected, fill opacity!
 $('.icons').on("click", ".unselected", function(evt) {
         $(this).addClass('selected').removeClass('unselected');
+        console.log('selected!')
         
         // take the attribute name and business id for where the click was
         var businessId = $(this).closest(".business").attr("id");
@@ -135,7 +177,6 @@ $('.icons').on("click", ".unselected", function(evt) {
         $.post('/deleteattr', {"attrName": attrName,
                                "businessId": businessId});
 });
-
-
+                              
 </script>
-{% endblock %}
+{% endblock %}  

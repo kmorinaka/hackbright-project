@@ -1,11 +1,18 @@
+/*base.html*/
+.base-background {
+    background-color: #3D9970;
+}
+.container {
+    background-color: #3D9970;
+}
+/*homepage.html*/
 .home-container {
-    background-image: linear-gradient(#222, #333);
-    color: white;
+    background-color: #3D9970;
+    color: #001F3F;
     padding-top: 75px;
     padding-bottom: 75px;
     margin-bottom: 25px;
 }
-
 .home-container h1 {
     font-size: 100px;
     font-weight: bold;
@@ -13,4 +20,21 @@
 
 .home-container .btn {
     margin-top: 25px; 
+}
+/*profile.html*/
+.iconsize {
+    height: 24px; 
+    width: 24px;
+}
+.unselected{
+    -webkit-filter: grayscale(100%); 
+    opacity: 0.7; 
+}
+.cashicon {
+    height: 30px; 
+    width: 30px;
+}
+.selected {
+    opacity: 1; 
+    -webkit-filter: grayscale(0%);
 }

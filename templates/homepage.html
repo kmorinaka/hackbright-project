@@ -6,37 +6,40 @@
 <section class="home-container">
     <div class="container text-center">
         <h1>Off The Chain</h1>
-        <!-- 
-        text input for search keyword
-        text input for location
-        submit button
-        background image
-        --> 
-        <h2>Support Small. Shop Local.</h2>
+        <h2><i>Support Small. Shop Local.</i></h2>
         <form class="form-inline" id="search" method="GET" action="/searchresults">
             <fieldset class="row">
                 <div class="form-group text-right col-sm-6">
                     <label for="search-term">I'm looking for:</label>
                     <input class="form-control input-lg" id="search-term" name="term" type="text">
                 </div>
-            
+
                 <div class="form-group text-left col-sm-6">
                     <label for="search-location">Location:</label>
                     <input class="form-control input-lg" id="search-location" name="location" type="text">
                 </div>
             </fieldset>
-                
+
             <fieldset class="row">
                 <input class="btn btn-default col-xs-4 col-xs-offset-4" type="submit" value="Search">
             </fieldset>
         </form>
     </div>
-
 </section>
 
 <div class="container text-center">
     <a class="twitter-timeline" href="https://twitter.com/shoplocally" data-widget-id="605858305823481858">Tweets by @shoplocally</a>
 </div>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
+<script>
+    ! function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+            p = /^http:/.test(d.location) ? 'http' : 'https';
+        if (!d.getElementById(id)) {
+            js = d.createElement(s);
+            js.id = id;
+            js.src = p + "://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }
+    }(document, "script", "twitter-wjs");
+</script>
 {% endblock %}
