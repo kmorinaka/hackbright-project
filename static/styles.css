@@ -19,6 +19,23 @@ body {
     background-image: url(/static/brickwall.png);
     background-repeat: repeat;
 }
+.navbar-search {
+    padding-top: 10px;
+    margin-left: 100px;
+}
+.navbar-search .btn {
+    background-color: white;
+    border: 1px solid #ddd;
+    color: #777;
+}
+.navbar-search .form-control {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    box-shadow: none;
+    color: #777;
+}
 /*homepage.html*/
 .logo-text {
     font-family: 'Lobster', cursive;
@@ -29,7 +46,7 @@ body {
     font-size: 16px;
 }
 .navbar-brand {
-    font-size: 24px;
+    font-size: 28px;
 }
 .home-container {
     color: #ddd;
@@ -60,7 +77,7 @@ body {
     background-color: rgba(255,255,255,.5);
     color: #ddd; 
 }
-.form-inline {
+.form-inline .homeform {
     padding-top: 25px;
 }
 /*results.html*/
@@ -72,7 +89,6 @@ body {
     width: 50%;
     font-size: 14px;
     font-family: 'Lato', sans-serif;
-    /*font-family: 'Quicksand', sans-serif;*/
     overflow: auto;
 }
 .business-info a {
@@ -91,7 +107,7 @@ body {
     height: 850px;
 }
 .map-container {
-    height: 850px;
+    height: 500px;
     width: 50%;
     overflow: none;
 }
