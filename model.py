@@ -4,7 +4,7 @@ db = SQLAlchemy()
 
 
 class Business(db.Model):
-    """When a user saves a business, add info to database."""
+    """Business information saved by the user"""
 
     __tablename__ = "businesses"
 
@@ -13,10 +13,9 @@ class Business(db.Model):
     name = db.Column(db.String(20), nullable=True)
     address = db.Column(db.String(20), nullable=True)
     city = db.Column(db.String(60), nullable=True)
-    state = db.Column(db.String(2), nullable=True)  # state code
+    state = db.Column(db.String(2), nullable=True)
     zipcode = db.Column(db.String(5), nullable=True)
-    phone = db.Column(db.String(60), nullable=True)  # better consistent format?
-    # categories = db.Column(db.String(60), nullable=True)
+    phone = db.Column(db.String(60), nullable=True)
     neighborhoods = db.Column(db.String(60), nullable=True)
     cross_streets = db.Column(db.String(60), nullable=True)
     yelp_url = db.Column(db.String(100), nullable=True)
@@ -24,7 +23,6 @@ class Business(db.Model):
     longitude = db.Column(db.Float(30), nullable=True)
 
     # define relationship to users table- only need to do in one class
-    # params for relationship(class name, table name, name to call class Business/table businesses
     users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
 
     def __repr__(self):
@@ -53,7 +51,7 @@ class User(db.Model):
 
 
 class Attribute(db.Model):
-    """Images that represent attributes a user can give a business"""
+    """Images that represent possible business attributes"""
 
     __tablename__ = "attributes"
 

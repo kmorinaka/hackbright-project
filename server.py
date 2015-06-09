@@ -16,6 +16,7 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 #normally, if you use an undefinted variable in jinja2, it fails silently.
 #instead, it will raise an error
+
 CLIENT_ID = os.environ['CLIENT_ID']
 
 
@@ -40,7 +41,7 @@ def search_results():
         return redirect('/')
     else:
         return render_template('results.html', businesses=businesses, num_res=num_res,
-                               term=term, location=location)
+                               term=term, location=location, CLIENT_ID=CLIENT_ID)
 
 
 @app.route('/details/', methods=['POST', 'GET'])
@@ -119,7 +120,7 @@ def login_page():
 
 @app.route('/login', methods=['POST'])
 def user_login():
-    """Process login"""
+    """Process login."""
     username = request.form['username']
     password = request.form['password']
 
@@ -151,7 +152,7 @@ def logout():
 
 @app.route('/saving', methods=['POST'])
 def save_businessinfo():
-    """when the user is logged in, they save the business info to db when click button"""
+    """when the user is logged in, they save the business info to db when click button."""
 
     yelp_id = request.form.get('yelpId')
     name = request.form.get('name')
@@ -160,7 +161,6 @@ def save_businessinfo():
     state = request.form.get('state')
     zipcode = request.form.get('zipcode')
     phone = request.form.get('phone')
-    # categories = " ".join(request.form.get('categories'))
     neighborhoods = request.form.get('neighborhoods')
     cross_streets = request.form.get('crossStreets')
     yelp_url = request.form.get('yelpUrl')
@@ -175,9 +175,8 @@ def save_businessinfo():
 
     if not q:
     # if NOT in database, add to database AND association table
-        new_business = Business(yelp_id=yelp_id, name=name, address=address,
-                                city=city, state=state, zipcode=zipcode, phone=phone,
-                                neighborhoods=neighborhoods,
+        new_business = Business(yelp_id=yelp_id, name=name, address=address, city=city, state=state,
+                                zipcode=zipcode, phone=phone, neighborhoods=neighborhoods,
                                 cross_streets=cross_streets, yelp_url=yelp_url, latitude=latitude,
                                 longitude=longitude)
         print new_business
@@ -204,22 +203,22 @@ def save_businessinfo():
             db.session.add(new_association)
             db.session.commit()
 
-    return "the ajax post request worked"
+    return "The ajax post request worked"
 
 
 @app.route('/userprofile')
 def display_user_profile():
-    """Display the user's info and the info of businesses they saved"""
+    """Display the user's info and the info of businesses they saved."""
     # pulls the username for user that is logged in
     user_id = session['user_id']
 
-    # querying the db base with user_id in session
+    # querying the db base with user_id
     user = User.query.get(user_id)
 
     # user.businesses is a list of objects.
     businesses = user.businesses
 
-    """Saving attributes to the databse when user clicks on an attribute icon"""
+    """Saving attributes to the databse when user clicks on an attribute icon."""
 
     list_user_business_objs = UserBusinessLink.query.filter_by(user_id=user_id).all()
 
@@ -244,21 +243,17 @@ def display_user_profile():
                 if business_name not in attr_dict:
                     attr_dict[business_name] = {attr_name: 1}
                 else:
-                    attr_dict[business_name].update({attr_assoc.name: 1})
+
+                    attr_dict[business_name].update({attr_name: 1})
         else:
-            "There are no associations made"
-    print attr_dict
-    # turn into json
-    # attr_dict = json.dumps(attr_dict)
-    # print type(attr_dict)
+            attr_dict[business_name] = {}
 
     return render_template("profile.html", user=user, businesses=businesses, attr_dict=attr_dict)
 
 
 @app.route('/saveattr', methods=["POST"])
 def save_attr_assoc():
-    """A user can click on attr icon next to a saved business.
-    add association to database"""
+    """When a user clicks on an attr icon next for a saved business, add association to database."""
 
     attr_name = request.form.get("attrName")
     business_id = request.form.get("businessId")
@@ -269,7 +264,7 @@ def save_attr_assoc():
     q = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
                                       UserBusinessLink.business_id == business_id).first()
 
-    # q is the match of that u/b assoc, get the id
+    # get the user_business_id
     user_business_id = q.user_business_id
     # add new_attr_assoc to  AttrAssoc table!
     new_attr_assoc = AttrAssoc(user_business_id=user_business_id, name=attr_name)
@@ -277,12 +272,12 @@ def save_attr_assoc():
     db.session.add(new_attr_assoc)
     db.session.commit()
 
-    return "will save"
+    return "Saving attr association"
 
 
 @app.route('/deleteattr', methods=['POST'])
 def delete_attr_assoc():
-    """When a user unclicks an attr icon, it goes opaque and removes from database"""
+    """When a user unclicks an attr icon, it is removed from database."""
 
     attr_name = request.form.get("attrName")
     business_id = request.form.get("businessId")
@@ -291,7 +286,7 @@ def delete_attr_assoc():
     # given business_id/user_id, query UserBusiness to get the object
     user_business_obj = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
                                                       UserBusinessLink.business_id == business_id).first()
-    # get the id of the UserBusiness object
+    # get the user_business_id
     user_business_id = user_business_obj.user_business_id
     # given user_business_id, query AttrAssoc to get object
     obj_to_remove = AttrAssoc.query.filter(AttrAssoc.name == attr_name,
@@ -299,12 +294,12 @@ def delete_attr_assoc():
     db.session.delete(obj_to_remove)
     db.session.commit()
 
-    return "removing attr assoc"
+    return "Removing attr association"
 
 
 @app.route('/resources')
 def resource_articles():
-    """When you click on a button or link, go to page of articles"""
+    """When you click on a button or link, go to page of articles."""
 
     return render_template('resources.html')
 

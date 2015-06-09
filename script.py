@@ -9,7 +9,7 @@ import os
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 6
+SEARCH_LIMIT = 10
 CONSUMER_KEY = os.environ['CONSUMER_KEY']
 CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
 TOKEN = os.environ['TOKEN']
@@ -103,6 +103,8 @@ def query_api(term, location):
     response = search(term, location)
 
     def is_chain(name):
+        """Checking if a store_name from the exclude list is in the business response.
+        """
         found = False
         for store_name in stores:
             if store_name in name:
@@ -113,11 +115,14 @@ def query_api(term, location):
 
     # running the get_business function by each business_id
     businesses = [get_business(business_id) for business_id in list_ids]
-    # businesses is a list of dictionaries. One for each result.
+
+    for business in businesses:
+        if 'categories' not in business:
+            business['categories'] = [['N/A']]
 
     # reformating each dictionary with the info I want to display in a huge list comprehension!
 
-    businesses = [{'name': business['name'],
+    businesses = [{'name': str(business['name']),
                   'address': ' '.join(business['location']['address']),
                   'city': business['location']['city'],
                   'state': business['location']['state_code'],

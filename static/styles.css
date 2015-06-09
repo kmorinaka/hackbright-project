@@ -1,25 +1,98 @@
 /*base.html*/
-.base-background {
+
+/*.base-background {
     background-color: #3D9970;
 }
 .container {
     background-color: #3D9970;
+}*/
+body {
+    padding-bottom: 50px;
+    font-family: 'Lato', sans-serif;
+}
+.main-background {
+    background-image: url(/static/storesblur.jpg);
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+.profile-background {
+    background-image: url(/static/brickwall.png);
+    background-repeat: repeat;
 }
 /*homepage.html*/
+.logo-text {
+    font-family: 'Lobster', cursive;
+}
+.navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
+}
+.navbar-brand {
+    font-size: 24px;
+}
 .home-container {
-    background-color: #3D9970;
-    color: #001F3F;
-    padding-top: 75px;
-    padding-bottom: 75px;
-    margin-bottom: 25px;
+    color: #ddd;
+}
+.home-container .form-control {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0;
+    color: #ddd;
+}
+.home-container label {
+    font-size: 18px;
 }
 .home-container h1 {
+    padding-top: 150px;
+    margin-bottom: 25px;
     font-size: 100px;
     font-weight: bold;
+    color: #ddd;
+    text-shadow: 0 0 10px rgba(0,0,0,.8);
 }
-
 .home-container .btn {
-    margin-top: 25px; 
+    margin-top: 25px;
+    margin-bottom: 50px;
+    background-color: rgba(255,255,255,.5);
+    color: #ddd; 
+}
+.form-inline {
+    padding-top: 25px;
+}
+/*results.html*/
+.user-info {
+    margin-bottom: 30px;
+}
+.business-info {
+    height: 950px;
+    width: 50%;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    /*font-family: 'Quicksand', sans-serif;*/
+    overflow: auto;
+}
+.business-info a {
+    font-size: 25px;
+}
+.each-result {
+    margin-bottom: 25px;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 2px;
+    box-shadow: 0px 1px 4px rgba(0,0,0,.3);
+    display: inline-block;
+    width: 100%;
+}
+#map-results {
+    height: 850px;
+}
+.map-container {
+    height: 850px;
+    width: 50%;
 }
 /*profile.html*/
 .iconsize {
@@ -37,4 +110,10 @@
 .selected {
     opacity: 1; 
     -webkit-filter: grayscale(0%);
+}
+#map-profile {
+    height: 850px;
+}
+.icon-box {
+    margin-top: 20px;
 }

@@ -4,38 +4,23 @@
 
 <title>{{ user.username }}'s Profile</title>
 
-<style>
-        html, body {width: 100%; height: 100%}
-        body {margin: 0; padding: 0; overflow:hidden;}
-        #map, #map-container {height: 600px; margin: 0px;}
-        #map-container {padding-top: 50px;}
-        .iconsize {height: 24px; width: 24px;}
-        .unselected{-webkit-filter: grayscale(100%); opacity: 0.7; }
-        .cashicon {height: 30px; width: 30px;}
-        .selected {opacity: 1; -webkit-filter: grayscale(0%);}
-</style>
-
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
 
 <script>
-
  function initialize() {
 
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions)
+        var map = new google.maps.Map(document.getElementById('map-profile'), mapOptions)
         // account for if no businesses exist, create a default ceter lat/lng
-        // if {{ businesses[0] }}    
-        //     var center = new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
-
-        //     var defaultCenter = new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
 
         var mapOptions = {
-              zoom: 12,
-              center: new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
-            };
+          zoom: 12,
+          center: new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
+        };
+        
 
         map = new google.maps.Map(
-            document.getElementById('map'),
+            document.getElementById('map-profile'),
             mapOptions);
         
         // debugging
@@ -47,10 +32,9 @@
             
             var marker = new google.maps.Marker({
                 position: myLatLng,
-                map: map
-                // title: {{ business.name }} GOT AN ERROR FOR BI-RITE
+                map: map,
+                title: '{{ business.name }}'
              });
-
         {% endfor %}
         
     };
@@ -62,63 +46,24 @@
 
 
 {% block content %}
-<div class="container-fluid"> 
+<div class="container-fluid body"> 
+    <div class="user-info text-center">
+        <h3><b>{{ user.username }}</b></h3>
+        <p>You live in: {{ user.city }}, {{ user.state }}</p>
+        <p>Email: {{ user.email }}</p>
+    </div>
+    
     <div class="row">
-        <div class="col-md-6">    
-            <div class="userinfo">
-                
-                <h3><b>{{ user.username }}</b></h3>
-                <p>You live in: {{ user.city }}, {{ user.state }}</p>
-                <p>Email: {{ user.email }}</p>
-            </div>
-      
+        <div class="business-info col-md-6 col-xs-12"> 
             <div>
-                <h4><u>Your Saved Businesses:</u></h4>
-                {% for business in businesses %}
-                    <div class="business" id="{{ business.business_id }}">
-                        <span class="icons"><p><b>{{ business.name }}</b></p>
-
-                            {% if 'goodfood' in attr_dict[business.name] %}
-                            <img class="goodfood selected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
-                            {% else %}
-                            <img class="goodfood unselected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
-                            {% endif %}
-
-                           {% if 'clean' in attr_dict[business.name] %}
-                            <img class="clean selected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
-                            {% else %}
-                            <img class="clean unselected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
-                            {% endif %}
-
-                            {% if 'ecofriendly' in attr_dict[business.name] %}
-                            <img class="ecofriendly selected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
-                            {% else %}
-                            <img class="ecofriendly unselected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
-                            {% endif %}
-
-                            {% if 'friendly' in attr_dict[business.name] %}
-                            <img class="friendly selected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
-                            {% else %}
-                            <img class="friendly unselected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
-                            {% endif %}
-
-                            {% if 'wifi' in attr_dict[business.name] %}
-                            <img class="wifi selected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
-                            {% else %}
-                            <img class="wifi unselected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
-                            {% endif %}
-
-                            {% if 'cashonly' in attr_dict[business.name] %}
-                            <img class="cashicon selected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
-                            {% else %}
-                            <img class="cashicon unselected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
-                            {% endif %}
-
-                        </span>
-
-                           
-
-                        <ul>
+                <p class="col-md-8"><u>Your Saved Businesses:</u></p>
+                <p class="col-md-4"><u>Things to remember:</u></p>
+            </div>
+            {% for business in businesses %}
+            <div class="each-result">
+                <div class="col-md-8">
+                    <h3 class="business-name">{{ business.name }}</h3>  
+                        <ul class="list-unstyled">
                             <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
 
                         {% if business.phone %}
@@ -134,18 +79,56 @@
                         {% endif %}
                           
                         </ul>
-                    </div>      
-                {% endfor %}
-            </div>
+                </div>
+                <div class="icon-box col-md-4">
+                    <div class="business" id="{{ business.business_id }}">
+                        <span class="icons">
+                        {% if 'goodfood' in attr_dict[business.name] %}
+                        <img class="goodfood selected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                        {% else %}
+                        <img class="goodfood unselected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                        {% endif %}
+                    
+                        {% if 'clean' in attr_dict[business.name] %}
+                        <img class="clean selected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                        {% else %}
+                        <img class="clean unselected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                        {% endif %}
+                       
+                        {% if 'ecofriendly' in attr_dict[business.name] %}
+                        <img class="ecofriendly selected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                        {% else %}
+                        <img class="ecofriendly unselected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                        {% endif %}
+                  
+                        {% if 'friendly' in attr_dict[business.name] %}
+                        <img class="friendly selected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                        {% else %}
+                        <img class="friendly unselected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                        {% endif %}
+                        
+                        {% if 'wifi' in attr_dict[business.name] %}
+                        <img class="wifi selected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                        {% else %}
+                        <img class="wifi unselected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                        {% endif %}
+                       
+                        {% if 'cashonly' in attr_dict[business.name] %}
+                        <img class="cashicon selected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
+                        {% else %}
+                        <img class="cashicon unselected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
+                        {% endif %}
 
+                    </span>
+                    </div><!--closes info col-->
+                </div><!--closes icon col-->
+            </div> <!--closes row per business-->
+            {% endfor %}
+        </div><!-- closes column/ business-info -->
 
-      </div> <!-- closes left column with userinfo and businesses -->
-
-      <div class="col-md-6">
-        <div id="map-container">
-            <div id="map"></div>
+        <div class="map-container col-md-6 col-xs-12"> 
+            <div id="map-profile"></div>
         </div>
-      </div>
     </div> <!-- closes row -->
 </div>
 
