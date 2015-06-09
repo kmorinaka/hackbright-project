@@ -10,7 +10,7 @@ body {
     padding-bottom: 50px;
     font-family: 'Lato', sans-serif;
 }
-.main-background {
+.homepage-background {
     background-image: url(/static/storesblur.jpg);
     -webkit-background-size: cover;
     background-size: cover;
@@ -65,7 +65,7 @@ body {
 }
 /*results.html*/
 .user-info {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 .business-info {
     height: 950px;
@@ -93,6 +93,7 @@ body {
 .map-container {
     height: 850px;
     width: 50%;
+    overflow: none;
 }
 /*profile.html*/
 .iconsize {
@@ -106,6 +107,7 @@ body {
 .cashicon {
     height: 30px; 
     width: 30px;
+
 }
 .selected {
     opacity: 1; 

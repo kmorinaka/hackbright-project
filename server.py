@@ -33,14 +33,18 @@ def search_results():
     term = str(request.args.get('term'))
     location = str(request.args.get('location'))
 
-    businesses = query_api(term, location)
-    num_res = len(businesses)
-
-    if businesses == []:
-        flash("Sorry, no results matched your search. Try again.")
+    if term == '':
+        flash("What are you searching for?")
         return redirect('/')
     else:
-        return render_template('results.html', businesses=businesses, num_res=num_res,
+        businesses = query_api(term, location)
+        num_res = len(businesses)
+
+        if businesses == []:
+            flash("Sorry, no results matched your search. Try again.")
+            return redirect('/')
+        else:
+            return render_template('results.html', businesses=businesses, num_res=num_res,
                                term=term, location=location, CLIENT_ID=CLIENT_ID)
 
 
