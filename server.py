@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask, render_template, redirect, request, flash, session
-from flask_debugtoolbar import DebugToolbarExtension
 import json
 from jinja2 import StrictUndefined
 
@@ -10,26 +9,24 @@ from model import Business, User, UserBusinessLink, AttrAssoc, connect_to_db, db
 
 app = Flask(__name__)
 
-app.secret_key = "ABC"
-#required to use Flask sessions and the debug toolbar
+app.secret_key = "jdsfjhggghnrjnjynvcefcrv4c3rv"
 
 app.jinja_env.undefined = StrictUndefined
-#normally, if you use an undefinted variable in jinja2, it fails silently.
-#instead, it will raise an error
 
 CLIENT_ID = os.environ['CLIENT_ID']
 
 
 @app.route('/')
 def index():
-    """Homepage"""
+    """Homepage."""
 
     return render_template('homepage.html')
 
 
 @app.route('/searchresults', methods=['GET', 'POST'])
 def search_results():
-    """Will show the list of businesses resulting from a search"""
+    """Will show the list of businesses resulting from a search."""
+    
     term = str(request.args.get('term'))
     location = str(request.args.get('location'))
 
@@ -45,14 +42,17 @@ def search_results():
             return redirect('/')
         else:
             return render_template('results.html', businesses=businesses, num_res=num_res,
-                               term=term, location=location, CLIENT_ID=CLIENT_ID)
+                                    term=term, location=location, CLIENT_ID=CLIENT_ID)
 
 
 @app.route('/details/', methods=['POST', 'GET'])
 def display_business_info():
-    """Show the specific info for one business"""
+    """Show the specific info for one business.
 
-    #request.json is a dictionary with the data of the business clicked on
+    request.json is a dictionary with the data of the 
+
+    business clicked on."""
+
     name = request.args.get('name')
     address = request.args.get('address')
     city = request.args.get('city')
@@ -89,13 +89,12 @@ def register_form():
 def register_process():
     """Process registration."""
 
-    # Get form variables
     email = request.form["email"]
     password = request.form["password"]
     age = int(request.form["age"])
     username = request.form["username"]
-    city = request.form["city"]  # reformat city name to all lower case
-    state = request.form["state"]  # dropdown! yay
+    city = request.form["city"] 
+    state = request.form["state"]
 
     q = User.query.filter_by(username=username).all()
 
@@ -125,10 +124,10 @@ def login_page():
 @app.route('/login', methods=['POST'])
 def user_login():
     """Process login."""
+
     username = request.form['username']
     password = request.form['password']
 
-    # going to query the database to see if they are in db
     user = User.query.filter_by(username=username).first()
     if not user:
         flash("No such user")
@@ -141,8 +140,8 @@ def user_login():
     session["user_id"] = user.user_id
 
     flash("Logged in")
+
     return redirect('/')
-    # return redirect("/users/%s" % user.user_id)
 
 
 @app.route('/logout')
@@ -150,13 +149,17 @@ def logout():
     """Log out."""
 
     del session["user_id"]
+
     flash("Logged Out.")
+
     return redirect("/")
 
 
 @app.route('/saving', methods=['POST'])
 def save_businessinfo():
-    """when the user is logged in, they save the business info to db when click button."""
+    """When the user is logged in, they save the business info to
+    
+    db when click button."""
 
     yelp_id = request.form.get('yelpId')
     name = request.form.get('name')
@@ -310,10 +313,8 @@ def resource_articles():
 
 if __name__ == "__main__":
 
-    app.debug = True
-    #Setting debug=True to invoke the DebugToolbarExtension
+    app.debug = False
+    
     connect_to_db(app)
-
-    DebugToolbarExtension(app)
 
     app.run()
