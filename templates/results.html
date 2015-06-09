@@ -6,8 +6,7 @@
 
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
-<!--     // <script src="/static/mapstyles.js"></script> -->
-  <!--   // <script src="/static/map.js"></script> -->
+
  <script>   
     
     function initialize() {
@@ -90,7 +89,7 @@
 
 {% block content %}
 <div class="container-fluid body">
-   <form class="form-inline" id="search" method="GET" action="/searchresults">
+   <!-- <form class="form-inline" id="search" method="GET" action="/searchresults">
       <fieldset class="text-center">
          <div class="form-group">
             <label for="search-term">I'm looking for:</label>
@@ -102,8 +101,7 @@
          </div>
          <input type="submit" value="Search">
       </fieldset>
-      <!--change value to text i want on button-->
-   </form>
+   </form> -->
    <h1>Results:</h1>
    <br>
    <p>Your search for <i>{{ term }}</i> returned {{ num_res }} results in <i>{{ location }}</i></p>
