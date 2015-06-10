@@ -104,27 +104,27 @@ def query_api(term, location):
     response = search(term, location)
 
     def is_chain(name):
-        """Checking if a store_name from the exclude list is in the business response.
-        """
+        """Checking if a store_name from the exclude list is in the 
+        business_id response."""
+
         found = False
         for store_name in stores:
             if store_name in name:
                 found = True
         return found
 
-    list_ids = [business['id'] for business in response['businesses'] if not is_chain(business['id'])]
+    chain_stores = []
+    list_ids = []
 
+    for business in response['businesses']:
+        if is_chain(business['id']):
+            chain_stores.append(business['id'])
+        else: 
+            list_ids.append(business['id'])
+    
     # running the get_business function by each business_id
     businesses = [get_business(business_id) for business_id in list_ids]
     
-    # print "businesses before filtering"
-    # pprint(businesses)
-
-    for business in businesses:
-        if 'categories' not in business:
-            business['categories'] = [['N/A']]
-
-    chain_stores = []
     filtered_businesses = []
     for x in businesses:
         is_unique = True
@@ -135,29 +135,30 @@ def query_api(term, location):
             filtered_businesses.append(x)
         else:
             chain_stores.append(x)
-
-    print "chain list"
-    pprint([business['id'] for business in chain_stores])
+    
+    for business in filtered_businesses:
+        if 'categories' not in business:
+            business['categories'] = [['N/A']]
 
     # reformating each dictionary with the info I want to display in a huge list comprehension!
 
-    # filtered_businesses = [{'name': str(business['name']),
-    #               'address': ' '.join(business['location']['address']),
-    #               'city': business['location']['city'],
-    #               'state': business['location']['state_code'],
-    #               'zipcode': business['location']['postal_code'],
-    #               'phone': business.get('display_phone'),
-    #               'id': business['id'],
-    #               'yelp_url': business['url'], 'rating': business['rating'],
-    #               'categories': ', '.join([i[0] for i in business['categories']]),
-    #               'url_rating_stars': business['rating_img_url'],
-    #               'neighborhoods': ', '.join(business['location'].get('neighborhoods', [])) or None,
-    #               # getting the key if exists, joining into string
-    #               # if doesnt exist, set value to empty list
-    #               # joining an empty list is false, so set value to none (using or)
-    #               'cross_streets': business['location'].get('cross_streets'),
-    #               # separated latitude and longitude, does NOT account for non existent coordinates
-    #               'latitude': business['location']['coordinate']['latitude'],
-    #               'longitude': business['location']['coordinate']['longitude']} for business in filtered_businesses]
+    filtered_businesses = [{'name': str(business['name']),
+                  'address': ' '.join(business['location']['address']),
+                  'city': business['location']['city'],
+                  'state': business['location']['state_code'],
+                  'zipcode': business['location']['postal_code'],
+                  'phone': business.get('display_phone'),
+                  'id': business['id'],
+                  'yelp_url': business['url'], 'rating': business['rating'],
+                  'categories': ', '.join([i[0] for i in business['categories']]),
+                  'url_rating_stars': business['rating_img_url'],
+                  'neighborhoods': ', '.join(business['location'].get('neighborhoods', [])) or None,
+                  # getting the key if exists, joining into string
+                  # if doesnt exist, set value to empty list
+                  # joining an empty list is false, so set value to none (using or)
+                  'cross_streets': business['location'].get('cross_streets'),
+                  # separated latitude and longitude, does NOT account for non existent coordinates
+                  'latitude': business['location']['coordinate']['latitude'],
+                  'longitude': business['location']['coordinate']['longitude']} for business in filtered_businesses]
 
-    # return filtered_businesses
+    return filtered_businesses
