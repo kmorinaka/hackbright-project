@@ -9,7 +9,8 @@ import os
 API_HOST = 'api.yelp.com'
 SEARCH_PATH = '/v2/search/'
 BUSINESS_PATH = '/v2/business/'
-SEARCH_LIMIT = 10
+SEARCH_LIMIT = 15
+
 CONSUMER_KEY = os.environ['CONSUMER_KEY']
 CONSUMER_SECRET = os.environ['CONSUMER_SECRET']
 TOKEN = os.environ['TOKEN']
@@ -115,30 +116,48 @@ def query_api(term, location):
 
     # running the get_business function by each business_id
     businesses = [get_business(business_id) for business_id in list_ids]
+    
+    # print "businesses before filtering"
+    # pprint(businesses)
 
     for business in businesses:
         if 'categories' not in business:
             business['categories'] = [['N/A']]
 
+    chain_stores = []
+    filtered_businesses = []
+    for x in businesses:
+        is_unique = True
+        for y in businesses:
+            if x['id'] != y['id'] and x['name'] == y['name']:
+                is_unique = False   
+        if is_unique:
+            filtered_businesses.append(x)
+        else:
+            chain_stores.append(x)
+
+    print "chain list"
+    pprint([business['id'] for business in chain_stores])
+
     # reformating each dictionary with the info I want to display in a huge list comprehension!
 
-    businesses = [{'name': str(business['name']),
-                  'address': ' '.join(business['location']['address']),
-                  'city': business['location']['city'],
-                  'state': business['location']['state_code'],
-                  'zipcode': business['location']['postal_code'],
-                  'phone': business.get('display_phone'),
-                  'id': business['id'],
-                  'yelp_url': business['url'], 'rating': business['rating'],
-                  'categories': ', '.join([i[0] for i in business['categories']]),
-                  'url_rating_stars': business['rating_img_url'],
-                  'neighborhoods': ', '.join(business['location'].get('neighborhoods', [])) or None,
-                  # getting the key if exists, joining into string
-                  # if doesnt exist, set value to empty list
-                  # joining an empty list is false, so set value to none (using or)
-                  'cross_streets': business['location'].get('cross_streets'),
-                  # separated latitude and longitude, does NOT account for non existent coordinates
-                  'latitude': business['location']['coordinate']['latitude'],
-                  'longitude': business['location']['coordinate']['longitude']} for business in businesses]
+    # filtered_businesses = [{'name': str(business['name']),
+    #               'address': ' '.join(business['location']['address']),
+    #               'city': business['location']['city'],
+    #               'state': business['location']['state_code'],
+    #               'zipcode': business['location']['postal_code'],
+    #               'phone': business.get('display_phone'),
+    #               'id': business['id'],
+    #               'yelp_url': business['url'], 'rating': business['rating'],
+    #               'categories': ', '.join([i[0] for i in business['categories']]),
+    #               'url_rating_stars': business['rating_img_url'],
+    #               'neighborhoods': ', '.join(business['location'].get('neighborhoods', [])) or None,
+    #               # getting the key if exists, joining into string
+    #               # if doesnt exist, set value to empty list
+    #               # joining an empty list is false, so set value to none (using or)
+    #               'cross_streets': business['location'].get('cross_streets'),
+    #               # separated latitude and longitude, does NOT account for non existent coordinates
+    #               'latitude': business['location']['coordinate']['latitude'],
+    #               'longitude': business['location']['coordinate']['longitude']} for business in filtered_businesses]
 
-    return businesses
+    # return filtered_businesses
