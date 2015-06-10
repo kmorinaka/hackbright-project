@@ -89,19 +89,6 @@
 
 {% block content %}
 <div class="container-fluid body">
-   <!-- <form class="form-inline" id="search" method="GET" action="/searchresults">
-      <fieldset class="text-center">
-         <div class="form-group">
-            <label for="search-term">I'm looking for:</label>
-            <input class="form-control" id="search-term" name="term" type="text">
-         </div>
-         <div class="form-group">
-            <label for="search-location">Location:</label>
-            <input class="form-control" id="search-location" name="location" type="text">
-         </div>
-         <input type="submit" value="Search">
-      </fieldset>
-   </form> -->
    <h1>Results:</h1>
    <br>
    <p>Your search for <i>{{ term }}</i> returned {{ num_res }} results in <i>{{ location }}</i></p>

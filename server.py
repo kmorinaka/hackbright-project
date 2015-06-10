@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, render_template, redirect, request, flash, session
+from flask_debugtoolbar import DebugToolbarExtension
 import json
 from jinja2 import StrictUndefined
 
@@ -313,8 +314,10 @@ def resource_articles():
 
 if __name__ == "__main__":
 
-    app.debug = False
+    app.debug = True
     
     connect_to_db(app)
+
+    DebugToolbarExtension(app)
 
     app.run()

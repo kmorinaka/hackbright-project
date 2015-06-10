@@ -38,6 +38,13 @@ body {
     box-shadow: none;
     color: #777;
 }
+.instagram {
+    margin-left: 30px;
+}
+.instagram-placeholder {
+    padding-top: 50px;
+    display: inline-block;
+}
 /*homepage.html*/
 .logo-text {
     font-family: 'Lobster', cursive;
