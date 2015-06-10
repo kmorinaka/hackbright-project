@@ -118,10 +118,10 @@ def query_api(term, location):
 
     for business in response['businesses']:
         if is_chain(business['id']):
-            chain_stores.append(business['id'])
+            chain_stores.append(business)
         else: 
             list_ids.append(business['id'])
-    
+    # print chain_stores
     # running the get_business function by each business_id
     businesses = [get_business(business_id) for business_id in list_ids]
     
@@ -161,4 +161,10 @@ def query_api(term, location):
                   'latitude': business['location']['coordinate']['latitude'],
                   'longitude': business['location']['coordinate']['longitude']} for business in filtered_businesses]
 
-    return filtered_businesses
+    for reject in chain_stores:
+        reject['address'] = ', '.join(reject['location']['address'])
+
+
+    all_results = [filtered_businesses, chain_stores]
+    
+    return all_results

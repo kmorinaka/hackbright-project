@@ -32,4 +32,4 @@ stores = ['walgreens', 'cvs', 'target', 'walmart', 'rite-aid', 'costco', 'kmart'
           'sports-authority', 'dicks-sporting-goods', 'bass-pro-shops', 'petco', 'petsmart', 'wells-fargo',
           'bank-of-america', 'chase-bank', 'citibank', 'stater-bros', 'pavilions', 'pinkberry', 'piraat-pizzeri',
           'reasors',
-          'buffalo-exchange', 'goodwill-industries', 'the-salvation-army', 'shoe-biz', 'sony', 'microsoft']
+          'buffalo-exchange', 'goodwill-industries', 'the-salvation-army', 'sony', 'microsoft']

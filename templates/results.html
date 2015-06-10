@@ -39,50 +39,6 @@
 
     google.maps.event.addDomListener(window, 'load', initialize);
 
-
-    function createPhotoElement(photo) {
-      var innerHtml = $('<img>')
-        .addClass('instagram-image')
-        .attr('src', photo.images.thumbnail.url);
-
-      innerHtml = $('<a>')
-        .attr('target', '_blank')
-        .attr('href', photo.link)
-        .append(innerHtml);
-
-      return $('<div>')
-        .addClass('instagram-placeholder')
-        .attr('id', photo.id)
-        .append(innerHtml);
-    }
-
-    function didLoadInstagram(event, response) {
-      var that = this;
-
-      $.each(response.data, function(i, photo) {
-        $(that).append(createPhotoElement(photo));
-      });
-    }
-
-
-    $(function() {
-      $('.instagram').on('willLoadInstagram', function(event, options) {
-        console.log(options);
-      });
-
-
-      $('.instagram').on('didLoadInstagram', didLoadInstagram);
-      $('.instagram').instagram({
-        search: {
-          lat: "{{ businesses[0]['latitude'] }}",
-          lng: "{{ businesses[0]['longitude'] }}",
-          distance: '10',
-          hash: '{{ term }}'
-        },
-        clientId: '{{ CLIENT_ID }}',
-      });
-    });
-
 </script>
 {% endblock %}
 
@@ -91,7 +47,7 @@
 <div class="container-fluid body">
    <h1>Results:</h1>
    <br>
-   <p>Your search for <i>{{ term }}</i> returned {{ num_res }} results in <i>{{ location }}</i></p>
+   <p>Your search for <i>{{ term }}</i> returned {{ num_res }} results in <i>{{ location }}:</i></p>
    <div class="row">
       <div class="business-info col-md-6">
         
@@ -113,7 +69,15 @@
              </ul>
               </div>
             {% endfor %}
-  
+            <p id="num-rejected">Here are {{ num_rejected }} chain stores that we filtered out of your results:</p>
+          <div class="rejects list-unstyled">
+            {% for reject in rejected %}
+              <li><b>{{ reject['name'] }}</b></li>
+            <li>Address: {{ reject['address'] }} 
+              {{ reject['location']['city'] }}, {{ reject['location']['state_code'] }} {{ reject['location']['postal_code'] }}</li>
+              <br>
+            {% endfor %}
+          </div>
       </div>
       <div class="map-container col-md-6">
          <div id="map-results"></div>
@@ -145,17 +109,5 @@
         });
  
     </script>
-    <!--
-    add data- attribute for each key in business dictionary
 
-    in javascript attach a click event to the span with id bname
-    event handler for that click even will be a get request to the /profile route
-
-    image for business
-
-    display business info
-    link to yelp
-    map?
-
-    -->
 {% endblock %}

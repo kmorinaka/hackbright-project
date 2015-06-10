@@ -9,8 +9,6 @@
 body {
     padding-bottom: 50px;    
     font-family: 'Lato', sans-serif;
-    /*font-family: 'Bitter', serif;*/
-    /*font-family: 'Cabin', sans-serif;*/
 }
 .homepage-background {
     background-image: url(/static/storesblur.jpg);
@@ -90,6 +88,13 @@ body {
     padding-top: 25px;
 }
 /*results.html*/
+.rejects {
+    background-color: rgba(220,220,220,.3);
+    color: #EE6D4D;
+    padding: 10px 15px;
+        border-radius: 2px;
+    box-shadow: 0px 1px 4px rgba(0,0,0,.3);
+}
 .user-info {
     margin-right: 250px;
     margin-bottom: 50px;
@@ -107,13 +112,9 @@ body {
     font-size: 16px;
 }
 .business-info {
-    height: 950px;
     width: 50%;
     font-size: 14px;
-    /*font-family: 'Cabin', sans-serif;*/
     font-family: 'Lato', sans-serif;
-    /*font-family: 'Bitter', serif;*/
-    overflow: auto;
 }
 .business-info a {
     font-size: 25px;

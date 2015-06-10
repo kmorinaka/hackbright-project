@@ -1,7 +1,6 @@
 import os
 
 from flask import Flask, render_template, redirect, request, flash, session
-from flask_debugtoolbar import DebugToolbarExtension
 import json
 from jinja2 import StrictUndefined
 
@@ -35,15 +34,19 @@ def search_results():
         flash("What are you searching for?")
         return redirect('/')
     else:
-        businesses = query_api(term, location)
+        all_results = query_api(term, location)
+        businesses = all_results[0]
         num_res = len(businesses)
+        rejected = all_results[1]
+        num_rejected = len(rejected)
 
         if businesses == []:
             flash("Sorry, no results matched your search. Try again.")
             return redirect('/')
         else:
             return render_template('results.html', businesses=businesses, num_res=num_res,
-                                    term=term, location=location, CLIENT_ID=CLIENT_ID)
+                                    term=term, location=location, CLIENT_ID=CLIENT_ID, rejected=rejected,
+                                    num_rejected=num_rejected)
 
 
 @app.route('/details/', methods=['POST', 'GET'])
@@ -314,10 +317,8 @@ def resource_articles():
 
 if __name__ == "__main__":
 
-    app.debug = True
+    app.debug = False
     
     connect_to_db(app)
-
-    DebugToolbarExtension(app)
 
     app.run()
