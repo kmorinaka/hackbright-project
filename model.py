@@ -22,13 +22,13 @@ class Business(db.Model):
     latitude = db.Column(db.Float(30), nullable=True)
     longitude = db.Column(db.Float(30), nullable=True)
 
-    # define relationship to users table- only need to do in one class
+    # Define relationship to users table- only need to do in one class
     users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
 
     def __repr__(self):
-        """provides helpful representation when printed"""
+        """Provides helpful representation when printed"""
 
-        return "<Business name=%s>" % (self.yelp_id)
+        return "<Business id=%s>" % (self.yelp_id)
 
 
 class User(db.Model):
@@ -45,7 +45,7 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=True)
 
     def __repr__(self):
-        """provides helpful representation when printed"""
+        """Provides helpful representation when printed"""
 
         return "<User name=%s>" % (self.username)
 
@@ -59,31 +59,31 @@ class Attribute(db.Model):
 
 
 class UserBusinessLink(db.Model):
-    """Association table of users and the businesses they save to their account"""
+    """Association table of users, and the businesses they save to their account"""
 
-    __tablename__ = 'users_businesses'
+    __tablename__ = "users_businesses"
 
     user_business_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    business_id = db.Column(db.Integer, db.ForeignKey('businesses.business_id'))
-    attributes = db.relationship("Attribute", secondary='attr_assocs', backref=db.backref('users_businesses'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    business_id = db.Column(db.Integer, db.ForeignKey("businesses.business_id"))
+    attributes = db.relationship("Attribute", secondary="attr_assocs", backref=db.backref("users_businesses"))
 
 
 class AttrAssoc(db.Model):
-    """Adds the attribute to user/business association"""
+    """Connects the attribute with the appropriate user/business association"""
 
-    __tablename__ = 'attr_assocs'
+    __tablename__ = "attr_assocs"
 
     attr_assoc_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_business_id = db.Column(db.Integer, db.ForeignKey('users_businesses.user_business_id'))
-    name = db.Column(db.String(20), db.ForeignKey('attributes.name'))
+    user_business_id = db.Column(db.Integer, db.ForeignKey("users_businesses.user_business_id"))
+    name = db.Column(db.String(20), db.ForeignKey("attributes.name"))
 
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our SQLite database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hbproject.db'
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///hbproject.db"
     db.app = app
     db.init_app(app)
 
