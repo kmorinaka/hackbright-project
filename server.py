@@ -31,7 +31,7 @@ def search_results():
     term = str(request.args.get("term"))
     location = str(request.args.get("location"))
 
-    # Handle the case if a user tries to submit search without entering any text
+    # Handle the case if a user submits a search without entering any text
     if term == "":
         flash("What are you searching for?")
         return redirect("/")
@@ -99,7 +99,7 @@ def register_process():
     city = request.form["city"] 
     state = request.form["state"]
 
-    # check the database if the username exists or not
+    # Check the database if the username exists or not
     user_exists = User.query.filter_by(username=username).all()
 
     if user_exists:
@@ -205,7 +205,7 @@ def save_businessinfo():
     # Need to get the yelp id to get the business id
         b_obj = Business.query.filter_by(yelp_id=yelp_id).first()
         business_id = b_obj.business_id
-        # Finding the correct assocationm if it exists
+        # Finding the correct assocation if it exists
         association = UserBusinessLink.query.filter_by(user_id=user_id,
                                              business_id=business_id).first()
         if not association:
@@ -234,10 +234,10 @@ def display_user_profile():
     attr_dict = {}
     # user_business_id, user_id, business_id
     for user_business_obj in list_user_business_objs:
-        user_business_id = user_business_obj.user_business_id  # get id
+        user_business_id = user_business_obj.user_business_id
         print "user business id: %s" % (user_business_id)
         business_id = user_business_obj.business_id
-        # use business_id to query to get name
+        # Use business_id to get name of business
         business = Business.query.get(business_id)
         business_name = business.name
 
@@ -269,13 +269,13 @@ def save_attr_assoc():
 
     user_id = session["user_id"]
 
-    # given user_id and business_id, query where the user/business association matches in db
+    # Find the the user/business association that matches in db
     q = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
                                       UserBusinessLink.business_id == business_id).first()
 
-    # get the user_business_id
+    # Get the user_business_id
     user_business_id = q.user_business_id
-    # add new_attr_assoc to  AttrAssoc table!
+    # Add new_attr_assoc to  AttrAssoc table!
     new_attr_assoc = AttrAssoc(user_business_id=user_business_id, name=attr_name)
 
     db.session.add(new_attr_assoc)
@@ -292,10 +292,10 @@ def delete_attr_assoc():
     business_id = request.form.get("businessId")
 
     user_id = session["user_id"]
-    # given business_id/user_id, query UserBusiness to get the object
+    # Given business_id/user_id, query UserBusiness to get the object
     user_business_obj = UserBusinessLink.query.filter(UserBusinessLink.user_id == user_id,
                                                       UserBusinessLink.business_id == business_id).first()
-    # get the user_business_id
+    # Get the user_business_id
     user_business_id = user_business_obj.user_business_id
     # Given user_business_id, query AttrAssoc to get object
     obj_to_remove = AttrAssoc.query.filter(AttrAssoc.name == attr_name,

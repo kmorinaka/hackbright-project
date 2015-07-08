@@ -59,7 +59,7 @@ class Attribute(db.Model):
 
 
 class UserBusinessLink(db.Model):
-    """Association table of users, and the businesses they save to their account"""
+    """Association table of users and the businesses they save to their account"""
 
     __tablename__ = "users_businesses"
 

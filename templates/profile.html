@@ -64,9 +64,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
                             <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
 
                         {% if business.phone %}
-                            <li>Phone number: {{ business.phone }}</li>
+                            <li><b>Phone number</b>: {{ business.phone }}</li>
                         {% else %}
-                            <li>Phone number: N/A</li>
+                            <li><b>Phone number</b>: N/A</li>
                         {% endif %}
                                 
                         {% if business.cross_streets %}
