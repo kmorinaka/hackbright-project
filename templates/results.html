@@ -1,29 +1,21 @@
 {% extends 'base.html' %}
 
 {% block head %}
-
-    <title>Search Results</title>
-
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-
- <script>   
-    
+<title>Search Results</title>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>  
     function initialize() {
         var map = new google.maps.Map(document.getElementById('map-results'), mapOptions)
         var businesses = {{ businesses|tojson|safe }}
-
         var mapOptions = {
               zoom: 12,
               center: new google.maps.LatLng(businesses[0].latitude, businesses[0].longitude)
             };
-
+        
         map = new google.maps.Map(
             document.getElementById('map-results'),
-            mapOptions);
-
-        console.log('hello');
-     
+            mapOptions);     
 
         for (var i=0; i < businesses.length; i++) {
             var myLatLng = new google.maps.LatLng(businesses[i].latitude, businesses[i].longitude);
@@ -38,76 +30,64 @@
     };
 
     google.maps.event.addDomListener(window, 'load', initialize);
-
 </script>
 {% endblock %}
 
 
 {% block content %}
 <div class="container-fluid body">
-   <h1>Results:</h1>
-   <br>
-   <p>Your search for <i>{{ term }}</i> returned {{ num_res }} results in <i>{{ location }}:</i></p>
-   <div class="row">
-      <div class="business-info col-md-6">
-        
+    <h1>Results:</h1>
+    <br>
+    <p>Your search for <i>{{ term }}</i> returned {{ num_res }} results in <i>{{ location }}:</i></p>
+    <div class="row">
+        <div class="business-info col-md-6">
             {% for business in businesses %}
-              <div class="each-result">
-               <a href='/details' class="savedata " data-name="{{ business['name'] }}" data-address="{{ business['address'] }}" data-city="{{ business['city'] }}" data-state="{{ business['state'] }}" data-zipcode="{{ business['zipcode'] }}" data-phone="{{ business['phone'] }}" data-categories="{{ business['categories'] }}" data-yelp-id="{{ business['id'] }}" data-yelp-url="{{ business['yelp_url'] }}" data-rating="{{ business['rating'] }}" data-url-rating-stars="{{ business['url_rating_stars'] }}" data-neighborhoods="{{ business['neighborhoods'] }}" data-cross-streets="{{ business['cross_streets'] }}" data-latitude="{{ business['latitude'] }}" data-longitude="{{ business['longitude'] }}">
+            <div class="each-result">
+                <a href='/details' class="savedata " data-name="{{ business['name'] }}" data-address="{{ business['address'] }}" data-city="{{ business['city'] }}" data-state="{{ business['state'] }}" data-zipcode="{{ business['zipcode'] }}" data-phone="{{ business['phone'] }}" data-categories="{{ business['categories'] }}" data-yelp-id="{{ business['id'] }}" data-yelp-url="{{ business['yelp_url'] }}" data-rating="{{ business['rating'] }}" data-url-rating-stars="{{ business['url_rating_stars'] }}" data-neighborhoods="{{ business['neighborhoods'] }}" data-cross-streets="{{ business['cross_streets'] }}" data-latitude="{{ business['latitude'] }}" data-longitude="{{ business['longitude'] }}">
                {{ business['name'] }}</a>
-               <ul class="list-unstyled">
-               <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
-               {% if business['phone'] %}
-               <li>Phone number: {{ business['phone'] }}</li>
-               {% else %}
-               <li>Phone number: N/A</li>
-               {% endif %} {% if business['categories'] %}
-               <li>Categories: {{ business['categories'] }}</li>
-               {% else %}
-               <li>Categories: N/A</li>
-               {% endif %} 
-             </ul>
-              </div>
+                <ul class="list-unstyled">
+                    <li>Address: {{ business['address'] }} {{ business['city'] }}, {{ business['state'] }} {{ business['zipcode'] }}</li>
+                    {% if business['phone'] %}
+                    <li>Phone number: {{ business['phone'] }}</li>
+                    {% else %}
+                    <li>Phone number: N/A</li>
+                    {% endif %} {% if business['categories'] %}
+                    <li>Categories: {{ business['categories'] }}</li>
+                    {% else %}
+                    <li>Categories: N/A</li>
+                    {% endif %} 
+                </ul>
+            </div>
             {% endfor %}
             <p id="num-rejected">Here are {{ num_rejected }} chain stores that we filtered out of your results:</p>
-          <div class="rejects list-unstyled">
-            {% for reject in rejected %}
-              <li><b>{{ reject['name'] }}</b></li>
-            <li>Address: {{ reject['address'] }} 
-              {{ reject['location']['city'] }}, {{ reject['location']['state_code'] }} {{ reject['location']['postal_code'] }}</li>
-              <br>
-            {% endfor %}
-          </div>
-      </div>
-      <div class="map-container col-md-6">
-         <div id="map-results"></div>
-      </div>
-   </div>
-   <div class="row">
-      <div id="instafeed"></div>
-      <div class="instagram"></div>
-   </div>
+            <ul class="rejects list-unstyled">
+                {% for reject in rejected %}
+                <li><b>{{ reject['name'] }}</b></li>
+                <li>Address: {{ reject['address'] }} {{ reject['location']['city'] }}, {{ reject['location']['state_code'] }} {{ reject['location']['postal_code'] }}</li>
+                <br>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="map-container col-md-6">
+          <div id="map-results"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="instafeed"></div>
+        <div class="instagram"></div>
+    </div>
 </div>
 
 <script>
-    //make url safe version of all data attributes  ?address=45Miss&city=
-        // use window.href to send a get request with all data attributes in the 
-
-        // when they click on the business name, the function getDetails, gets the data from the data attributes
-        $(".savedata").on("click", function(evt) {
-            // prevents the routing href=/ on the <a>
-            evt.preventDefault();
-            // takes all the things on current target ('a') and turns it to a data object, setting that obj to variable params
-            var params = $(evt.currentTarget).data();
-            console.log(params)
-            // .param() formats data object into parameter info
-            var businessInfo = $.param(params);
-            // debugging: console.log(businessInfo);
-            // debugging: alert('clicked!');
-            // pass the new formatted parameter info to the url attaching to '/details' route
-            window.location.href = "/details?" + businessInfo;
-        });
- 
-    </script>
+    $(".savedata").on("click", function(evt) {
+        // Don't want the link to route to the details page
+        evt.preventDefault();
+        // Takes all the data attributes on the a tag, saves as an object
+        var params = $(evt.currentTarget).data();
+        var businessInfo = $.param(params);
+        // Pass the new formatted parameter info to the url attaching to '/details' route
+        window.location.href = "/details?" + businessInfo;
+    });
+</script>
 
 {% endblock %}

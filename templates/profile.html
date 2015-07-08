@@ -3,53 +3,42 @@
 {% block head %}
 
 <title>{{ user.username }}'s Profile</title>
-
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script src="https://code.jquery.com/jquery.js"></script>
 <script>
-function initialize() {
-
+    function initialize() {
         var map = new google.maps.Map(document.getElementById('map-profile'), mapOptions)
-
         var mapOptions = {
           zoom: 12,
           center: new google.maps.LatLng({{ businesses[0].latitude }}, {{ businesses[0].longitude }})
         };
-
         map = new google.maps.Map(
             document.getElementById('map-profile'),
             mapOptions);
-        
-        {% for business in businesses %}
 
+        {% for business in businesses %}
             var myLatLng = new google.maps.LatLng({{ business.latitude }}, {{ business.longitude }});
-            
             var marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
                 title: '{{ business.name }}'
              });
-
         {% endfor %}
         
     };
 
-google.maps.event.addDomListener(window, 'load', initialize);
-
+    google.maps.event.addDomListener(window, 'load', initialize);
 </script>
-
 {% endblock %}
 
-{% block content %}
 
+{% block content %}
 <div class="container-fluid body"> 
     <div class="user-info text-center">
         <h3 class="logo-text"><b>{{ user.username }}</b></h3>
         <p>You live in: {{ user.city }}, {{ user.state }}</p>
         <p>Email: {{ user.email }}</p>
     </div>
-    
     <div class="row">
         <div class="business-info col-md-6 col-xs-12"> 
             <div class="titles logo-text">
@@ -62,19 +51,17 @@ google.maps.event.addDomListener(window, 'load', initialize);
                     <h3 class="business-name">{{ business.name }}</h3>  
                         <ul class="list-unstyled">
                             <li>Address: {{ business.address }} {{ business.city }}, {{ business.state}} {{ business.zipcode }}</li>
-
-                        {% if business.phone %}
+                            {% if business.phone %}
                             <li><b>Phone number</b>: {{ business.phone }}</li>
-                        {% else %}
+                            {% else %}
                             <li><b>Phone number</b>: N/A</li>
-                        {% endif %}
+                            {% endif %}
                                 
-                        {% if business.cross_streets %}
+                            {% if business.cross_streets %}
                             <li>Cross streets: {{ business.cross_streets }}</li>
-                        {% else %}
+                            {% else %}
                             <li>Cross streets: N/A</li>
-                        {% endif %}
-                          
+                            {% endif %}
                         </ul>
                 </div>
                 <div class="icon-box col-md-4">
@@ -117,42 +104,36 @@ google.maps.event.addDomListener(window, 'load', initialize);
                         {% endif %}
 
                     </span>
-                    </div><!--closes info col-->
-                </div><!--closes icon col-->
-            </div> <!--closes row per business-->
+                    </div>
+                </div>
+            </div>
             {% endfor %}
-        </div><!-- closes column/ business-info -->
-
+        </div>
         <div class="map-container col-md-6 col-xs-12"> 
             <p class="logo-text text-center"><u>Your Map:</u></p>
             <div id="map-profile"></div>
         </div>
-    </div> <!-- closes row -->
+    </div>
 </div>
 
 <script>
-// when you click on an image that is unselected, fill opacity!
+// Fill the opacity to show the user the icon attribute was selected
 $('.icons').on("click", ".unselected", function(evt) {
         $(this).addClass('selected').removeClass('unselected');
-        console.log('selected!')
-        
-        // take the attribute name and business id for where the click was
+        // Take the attribute name and business id for where the click was
         var businessId = $(this).closest(".business").attr("id");
         var attrName = $(this).data('attr');
-        
-        // send the variables to the route '/saveattr' (will save to db in route)
+        // Send the variables to the route '/saveattr' (will save to db in route)
         $.post('/saveattr', {"attrName": attrName,
                              "businessId": businessId});
-   // when you click on an image that is selected, lower opacity
+    // Lowering opacity when a user wantes to unselect an icon attribute
 }).on("click", ".selected", function(evt) {
     console.log('click selected');
         $(this).addClass('unselected').removeClass('selected');
-        
-        // take the attribute name and business id for where the click was
+        // Take the attribute name and business id for where the click was
         var businessId = $(this).closest(".business").attr("id");
         var attrName = $(this).data("attr");
-
-        // send the variables to the route '/saveattr' (to remove from db)
+        // Send the variables to the route '/saveattr' (to remove from db)
         $.post('/deleteattr', {"attrName": attrName,
                                "businessId": businessId});
 });

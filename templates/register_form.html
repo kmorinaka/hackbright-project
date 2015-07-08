@@ -5,34 +5,29 @@
 {% block content %}
 
 <form action="/register" method="POST">
-
     <div class="form-group">
         <label>
             Username
             <input type="text" name="username" class="form-control">
         </label>
     </div>
-
     <div class="form-group">
         <label>
             Password
             <input type="password" name="password" class="form-control">
         </label>
     </div>
-    
     <div class="form-group">
         <label>
             Email
             <input type="email" name="email" class="form-control">
         </label>
     </div>
-
     <div class="form-group">
         <label>
             City
             <input type="text" name="city" class="form-control">
             <br>
-            
             <select name="state" size="1">
             <option selected value="">State...</option>
             <option value="None">None</option>
@@ -113,17 +108,14 @@
             </select>
         </label>
     </div>
-
     <div class="form-group">
         <label>
             Age
             <input type="number" name="age" class="form-control" min="15">
         </label>
     </div>
-
     <div class="form-group">
         <input type="submit" value="Register, Mortal" class="btn btn-danger">
     </div>
-
 </form>
 {% endblock %}
