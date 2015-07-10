@@ -201,7 +201,7 @@ def save_businessinfo():
         db.session.add(new_association)
         db.session.commit()
     else:
-    # If the business is already IN database, ONLY add id to User/Business association table
+    # If the business is already in database, only add id to User/Business association table
     # Need to get the yelp id to get the business id
         b_obj = Business.query.filter_by(yelp_id=yelp_id).first()
         business_id = b_obj.business_id
@@ -315,10 +315,10 @@ def resource_articles():
 
 if __name__ == "__main__":
 
-    app.debug = True
+    app.debug = False
     
     connect_to_db(app)
     
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
     app.run()

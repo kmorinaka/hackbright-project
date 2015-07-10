@@ -68,41 +68,40 @@
                     <div class="business" id="{{ business.business_id }}">
                         <span class="icons">
                         {% if 'goodfood' in attr_dict[business.name] %}
-                        <img class="goodfood selected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                        <img class="goodfood selected iconsize" src="/static/attribute_images/goodfood.png" title="Good Food" data-attr="goodfood"/>
                         {% else %}
-                        <img class="goodfood unselected iconsize" src="/static/goodfood.png" title="Good Food" data-attr="goodfood"/>
+                        <img class="goodfood unselected iconsize" src="/static/attribute_images/goodfood.png" title="Good Food" data-attr="goodfood"/>
                         {% endif %}
                     
                         {% if 'clean' in attr_dict[business.name] %}
-                        <img class="clean selected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                        <img class="clean selected iconsize" src="/static/attribute_images/clean.png" title="Clean" data-attr="clean"/>
                         {% else %}
-                        <img class="clean unselected iconsize" src="/static/clean.png" title="Clean" data-attr="clean"/>
+                        <img class="clean unselected iconsize" src="/static/attribute_images/clean.png" title="Clean" data-attr="clean"/>
                         {% endif %}
                        
                         {% if 'ecofriendly' in attr_dict[business.name] %}
-                        <img class="ecofriendly selected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                        <img class="ecofriendly selected iconsize" src="/static/attribute_images/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
                         {% else %}
-                        <img class="ecofriendly unselected iconsize" src="/static/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
+                        <img class="ecofriendly unselected iconsize" src="/static/attribute_images/ecofriendly.png" title="Eco-friendly" data-attr="ecofriendly"/>
                         {% endif %}
 
                         {% if 'friendly' in attr_dict[business.name] %}
-                        <img class="friendly selected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                        <img class="friendly selected iconsize" src="/static/attribute_images/friendly.png" title="Friendly Service" data-attr="friendly"/>
                         {% else %}
-                        <img class="friendly unselected iconsize" src="/static/friendly.png" title="Friendly Service" data-attr="friendly"/>
+                        <img class="friendly unselected iconsize" src="/static/attribute_images/friendly.png" title="Friendly Service" data-attr="friendly"/>
                         {% endif %}
                         
                         {% if 'wifi' in attr_dict[business.name] %}
-                        <img class="wifi selected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                        <img class="wifi selected iconsize" src="/static/attribute_images/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
                         {% else %}
-                        <img class="wifi unselected iconsize" src="/static/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
+                        <img class="wifi unselected iconsize" src="/static/attribute_images/wifi.png" title="Has Wi-fi" data-attr="wifi"/>
                         {% endif %}
                        
                         {% if 'cashonly' in attr_dict[business.name] %}
-                        <img class="cashicon selected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
+                        <img class="cashicon selected iconsize" src="/static/attribute_images/cashonly.png" title="Cash Only" data-attr="cashonly"/>
                         {% else %}
-                        <img class="cashicon unselected iconsize" src="/static/cashonly.png" title="Cash Only" data-attr="cashonly"/>
+                        <img class="cashicon unselected iconsize" src="/static/attribute_images/cashonly.png" title="Cash Only" data-attr="cashonly"/>
                         {% endif %}
-
                     </span>
                     </div>
                 </div>
@@ -136,7 +135,6 @@ $('.icons').on("click", ".unselected", function(evt) {
         // Send the variables to the route '/saveattr' (to remove from db)
         $.post('/deleteattr', {"attrName": attrName,
                                "businessId": businessId});
-});
-                              
+});                           
 </script>
 {% endblock %}  

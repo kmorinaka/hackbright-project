@@ -1,11 +1,3 @@
-/*base.html*/
-
-/*.base-background {
-    background-color: #3D9970;
-}
-.container {
-    background-color: #3D9970;
-}*/
 body {
     padding-bottom: 50px;    
     font-family: 'Lato', sans-serif;
@@ -37,13 +29,12 @@ body {
     color: #777;
 }
 .instagram {
-    margin-left: 30px;
+
 }
 .instagram-placeholder {
     padding-top: 50px;
     display: inline-block;
 }
-/*homepage.html*/
 .logo-text {
     font-family: 'Lobster', cursive;
 }
@@ -87,7 +78,6 @@ body {
 .form-inline .homeform {
     padding-top: 25px;
 }
-/*results.html*/
 .rejects {
     background-color: rgba(220,220,220,.3);
     color: #EE6D4D;

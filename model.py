@@ -23,7 +23,8 @@ class Business(db.Model):
     longitude = db.Column(db.Float(30), nullable=True)
 
     # Define relationship to users table- only need to do in one class
-    users = db.relationship("User", secondary='users_businesses', backref=db.backref("businesses"))
+    users = db.relationship("User", secondary='users_businesses',
+                            backref=db.backref("businesses"))
 
     def __repr__(self):
         """Provides helpful representation when printed"""
